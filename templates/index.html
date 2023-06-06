@@ -20,6 +20,7 @@
                 <div class="ru-widget">
                 </div>
                 <div class="ld-widget">
+                    <span class="subtitle">Depth</span>
                     <div class="qty mt-5" id='depth'>
                         <span class="minus">-</span>
                         <!--<input type="number" class="count" name="qty" value="1">-->
@@ -28,6 +29,7 @@
                     </div>
                 </div>
                 <div class="rd-widget">
+                    <span class="subtitle">Gain</span>
                     <div class="qty mt-5" id='gain'>
                         <span class="minus">-</span>
                         <span class="count">0%</span>
@@ -42,13 +44,25 @@
             </div>
             
             <div class ="setting_page">
+                
                 <div class="setting_header">
-                    <span>Go to All Views</span>
+                    <div><h4>Go to All Views</h4></div>
+                    
                     <button class="arrow-button"></button>
                 </div>
-                <div class ="img_display">
-                    <img src = "{{url_for('video_feed')}}">
+                <div class = "setting_topics">
+                    <h3>PLAX</h3><br>
+                    <h5>1 of 5, Next AP4</h5>
+                    <div class ="img_display">
+                        <img src = "{{url_for('static',filename="img/chest_ultra.png")}}">
+                        <img src = "{{url_for('static',filename="img/chest_grid.png")}}">
+                    </div>
+                    <div class="exit_exam">
+                        <h5>End Exam</h5>
+                    </div>
+
                 </div>
+                
             </div>
             
             

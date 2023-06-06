@@ -1,9 +1,10 @@
+
 html,body{
     font-size: 15px;
     margin:0px;
     height:100%;
     width:100%;
-    border: 1px solid red;
+    /* border: 1px solid red; */
 }
 .background{
     background-color: black;
@@ -16,13 +17,13 @@ html,body{
     position: relative;
     width:80%;
     height:100%;
-    border: 10px solid brown;
+    /* border: 10px solid brown; */
 }
 .setting_page{
     position: relative;
     width:20%;
     height:100%;
-    border: 10px solid green;
+    border: 1px solid #FFFFF0;
     z-index: 10;
     display: flex;
     flex-direction: column;
@@ -31,7 +32,7 @@ html,body{
    position: absolute;
    left:10px;
    top:10px;
-   border: 1px solid green;
+   /* border: 1px solid green; */
    width: 20%;
    height:30%; 
    z-index: 5;
@@ -41,7 +42,7 @@ html,body{
    position: absolute;
    right:10px;
    top:10px;
-   border: 1px solid orange;
+   /* border: 1px solid orange; */
    width: 20%;
    height:30%; 
    z-index: 5;
@@ -51,26 +52,56 @@ html,body{
     position: absolute;
     left:10px;
     bottom:10px;
-    border: 1px solid green;
+    /* border: 1px solid green; */
     width: 20%;
     height:30%; 
     z-index: 5;
  }
  
- .rd-widget{
+ #depth{
+    /* border: 1px so   lid red; */
+    position: absolute;
+    bottom: 5px;
+    left: 20px;
+}
+.ld-widget .subtitle{
+    color: white;
+    /* border: 1px solid green; */
+    font-size: x-large;
+    position: absolute;
+    bottom: 40px;
+    left: 50px;
+}
+
+.rd-widget{
     position: absolute;
     right:10px;
     bottom:10px;
-    border: 1px solid orange;
+    /* border: 1px solid orange; */
     width: 20%;
     height:30%; 
     z-index: 5;
  }
 
+#gain{
+    /* border: 1px solid red; */
+    position: absolute;
+    bottom: 5px;
+    right: 20px;
+}
+.rd-widget .subtitle{
+    color: white;
+    /* border: 1px solid green; */
+    font-size: x-large;
+    position: absolute;
+    bottom: 40px;
+    right: 50px;
+}
+
 .screen{
     width: 100%;
     height:80%;
-    border: 1px solid blue;
+    /* border: 1px solid blue; */
     z-index: 1;
     display: flex;
     align-items: center;
@@ -88,26 +119,79 @@ html,body{
     border: 1px dashed purple;
 }
 
+.setting_header{
+    color: #fffaf0;
+    background-color: #1e90ff;
+    position: relative;
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    flex-direction: row;
+}
+
+.setting_header div{
+    flex: 1;
+    /* border: 1px solid red; */
+}
+
+.setting_topics{
+    position: relative;
+    /* border: 1px solid red; */
+    height: 100%;
+    color: #fffaf0;
+}
+
 .img_display img{
     max-width: 100%;
     height: auto;
 }
-.setting_header{
-    color: #fffaf0;
-    background-color: #1e90ff;
-}
 .arrow-button {
-    font-size: 20px;
-    padding: 5px 10px;
-    background-color: #ddd;
+    float: right;
+    width: 40px;
+    height: 40px;
+    background-color:inherit; /* Set your desired background color */
     border: none;
+    outline: none;
     cursor: pointer;
-}
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-left: 1px solid wheat;
+  }
   
-.arrow-button::after {
-    content: '\2192'; /* Unicode value for right arrow */
-}
+  .arrow-button::after {
+    content: '';
+    /* position: absolute; */
+    /* top: 50%;
+    left: 50%; */
+    /* transform: translate(-50%, -50%); */
+    width: 12px;
+    height: 12px;
+    /* border:  2px solid red; */
+    border-right: 2px solid #fff; /*Set your desired arrow color */
+    border-top: 2px solid #fff; /*Set your desired arrow color*/
+    transform: rotate(45deg);
+  }
   
+  
+
+
+.exit_exam{
+    position: absolute;
+    bottom: 0px;
+    border: 1px solid #1e90ff;
+    width: 100%;
+    height: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.exit_exam h3{
+    text-align: center;
+    /* border: 1px solid red; */
+}
 
 /*css for plus and minus sign begin*/
 .qty .count {
