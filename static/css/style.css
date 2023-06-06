@@ -173,8 +173,25 @@ html,body{
     border-top: 2px solid #fff; /*Set your desired arrow color*/
     transform: rotate(45deg);
   }
-  
-  
+.bt-select{
+    display: flex;
+    justify-content: space-around   ;
+    align-items: center;
+}
+
+.to-left,.to-right{
+    border: none;
+}
+.to-left::after{
+    border: none;
+    border-left: 2px solid #ffffff59; /*Set your desired arrow color */
+    border-bottom: 2px solid #ffffff59; /*Set your desired arrow color*/
+}
+.to-right::after{
+    border: none;
+    border-right: 2px solid #ffffff59; /*Set your desired arrow color */
+    border-top: 2px solid #ffffff59; /*Set your desired arrow color*/
+}
 
 
 .exit_exam{
