@@ -24,6 +24,8 @@ A Flask Web-App to stream live from local webcam or CCTV (rtsp link)
 net , buffer = cv2.imencode('.jpg', frame)
 buffer.tobytes()           
 
+```
+
 ### Pyinstaller
 ```
 pyinstaller -w -F --add-data "templates:templates" --add-data "static:static" --add-data "1.mp4:." --add-binary ../../video_streaming_UI/UI_env/lib/python3.10/site-packages/opencv_python.libs/*:. app.py
