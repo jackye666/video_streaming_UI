@@ -1,13 +1,15 @@
 from flask import Flask, render_template, Response, url_for
 import cv2
+from flaskwebgui import FlaskUI
 
 app = Flask(__name__,
         static_url_path='/static',
         static_folder='static')#this is important for flask to read your css file, without indication of static url path and folder, css file won't be read properly.
 
 # camera = cv2.VideoCapture(-1)  # use 0 for web camera
-camera = cv2.VideoCapture(0)
-#  for cctv camera use rtsp://username:password@ip_address:554/user=username_password='password'_channel=channel_number_stream=0.sdp' instead of camera
+camera = cv2.VideoCapture('static/video/1.mp4')
+# ui = FlaskUI(app,width=1400, height=980)
+# for cctv camera use rtsp://username:password@ip_address:554/user=username_password='password'_channel=channel_number_stream=0.sdp' instead of camera
 # for local webcam use cv2.VideoCapture(0)
 
 def gen_frames():  # generate frame by frame from camera
@@ -18,7 +20,7 @@ def gen_frames():  # generate frame by frame from camera
             break
         else:
             # print(frame.shape)
-            # frame = cv2.resize(frame, (480,640))
+            frame = cv2.resize(frame, (640,480))
             ret, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
@@ -38,4 +40,5 @@ def index():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # app.run(debug=True,port = 5001)
+    FlaskUI(app=app, server="flask",width=1300, height=780).run()
