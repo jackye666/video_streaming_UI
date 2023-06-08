@@ -40,10 +40,11 @@ def index():
 
 @app.route('/img_name')
 def get_img_name():
-    img_list = {"name":["PLAX","PSAX-AV","PSAX-MV","PSAX-PM","AP4","None"],"diagram":["d1","d2","d3","d4","d5","None"],"position":["p1","p234","p234","p234","p5"]}
+    img_list = {"name":["PLAX","PSAX-AV","PSAX-MV","PSAX-PM","AP4","AP5","AP2","None"],\
+        "diagram":["d1","d2","d3","d4","d5","d6","d7","None"],"position":["p1","p234","p234","p234","p5","p5","p5"]}
     return jsonify(img_list)
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
-    # FlaskUI(app=app, server="flask",width=1300, height=780).run()
+    # app.run(debug=True)
+    FlaskUI(app=app, server="flask",width=1300, height=780).run()

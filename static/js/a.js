@@ -17,7 +17,7 @@ $(document).ready(function(){
         dataType: "json",
         success: function(response){
             console.log(response);
-            console.log(response.name,response.diagram)
+            console.log(response.name,response.name.length)
             img_lst = response;
         },
         error: function(err){
@@ -111,9 +111,12 @@ $(document).ready(function(){
     },100);
 
     var cur_id = 0;
-
+    // let l = img_lst.position;
     $("#toright").click(()=>{
-        cur_id+=1;
+        if(cur_id < img_lst.position.length-1){
+            cur_id+=1;
+        }
+        
         let fname1 = "static/img/"+img_lst.diagram[cur_id]+".png";
         let fname2 = 'static/img/'+img_lst.position[cur_id]+".png";
         $("#img_dig").attr("src",fname1);
@@ -122,7 +125,7 @@ $(document).ready(function(){
         let subtitle = $(".setting_topics .bt-select span");
         
         topic.text(img_lst.name[cur_id]);
-        let tmp = (cur_id+1) + " of 5, Next "+ img_lst.name[cur_id+1];
+        let tmp = (cur_id+1) + " of "+img_lst.position.length+", Next "+ img_lst.name[cur_id+1];
         subtitle.text(tmp);
 
     })
