@@ -6,11 +6,27 @@ var DOWN = false;
 var RISE = false;
 var FALL = false;
 
+var img_lst;
+
 
 
 $(document).ready(function(){
-    //plus and minus sign
+    $.ajax({
+        url: "/img_name",
+        method: "GET",
+        dataType: "json",
+        success: function(response){
+            console.log(response);
+            console.log(response.name,response.diagram)
+            img_lst = response;
+        },
+        error: function(err){
+            console.log(err);
+        }
+    });
 
+
+    //plus and minus sign
     var click_delay = 50;
 
     var cnt_depth = $('#depth .count')
@@ -94,6 +110,38 @@ $(document).ready(function(){
         }
     },100);
 
+    var cur_id = 0;
+
+    $("#toright").click(()=>{
+        cur_id+=1;
+        let fname1 = "static/img/"+img_lst.diagram[cur_id]+".png";
+        let fname2 = 'static/img/'+img_lst.position[cur_id]+".png";
+        $("#img_dig").attr("src",fname1);
+        $("#img_pos").attr("src",fname2);
+        let topic = $(".setting_topics h3");
+        let subtitle = $(".setting_topics .bt-select span");
+        
+        topic.text(img_lst.name[cur_id]);
+        let tmp = (cur_id+1) + " of 5, Next "+ img_lst.name[cur_id+1];
+        subtitle.text(tmp);
+
+    })
+
+    $("#toleft").click(()=>{
+        if(cur_id > 0){
+            cur_id -= 1;
+        }
+        let fname1 = "static/img/"+img_lst.diagram[cur_id]+".png";
+        let fname2 = 'static/img/'+img_lst.position[cur_id]+".png";
+        $("#img_dig").attr("src",fname1);
+        $("#img_pos").attr("src",fname2);
+        let topic = $(".setting_topics h3");
+        let subtitle = $(".setting_topics .bt-select span");
+        
+        topic.text(img_lst.name[cur_id]);
+        let tmp = (cur_id+1) + " of 5, Next "+ img_lst.name [cur_id+1];
+        subtitle.text(tmp);
+    })
 
  });
 

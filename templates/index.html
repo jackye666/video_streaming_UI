@@ -53,13 +53,13 @@
                 <div class = "setting_topics">
                     <h3>PLAX</h3>
                     <div class="bt-select">
-                        <button class="arrow-button to-left"></button>
-                        <span>1 of 5, Next AP4</span>
-                        <button class="arrow-button to-right"></button>
+                        <button class="arrow-button to-left" id="toleft"></button>
+                        <span>1 of 5, Next PSAX-AV</span>
+                        <button class="arrow-button to-right" id="toright"></button>
                     </div>
                     <div class ="img_display">
-                        <img src = "{{url_for('static',filename="img/chest_ultra.png")}}">
-                        <img src = "{{url_for('static',filename="img/chest_grid.png")}}">
+                        <img id = "img_dig" src = "{{url_for('static',filename='img/chest_ultra.png')}}">
+                        <img id = "img_pos" src = "{{url_for('static',filename='img/chest_grid.png')}}">
                     </div>
                     <div class="exit_exam">
                         <h5>End Exam</h5>

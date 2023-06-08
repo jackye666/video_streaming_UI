@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Response, url_for
+from flask import Flask, render_template, Response, url_for, jsonify
 import cv2
 from flaskwebgui import FlaskUI
 
@@ -38,7 +38,12 @@ def index():
     """Video streaming home page."""
     return render_template('index.html')
 
+@app.route('/img_name')
+def get_img_name():
+    img_list = {"name":["PLAX","PSAX-AV","PSAX-MV","PSAX-PM","AP4","None"],"diagram":["d1","d2","d3","d4","d5","None"],"position":["p1","p234","p234","p234","p5"]}
+    return jsonify(img_list)
+
 
 if __name__ == '__main__':
-    # app.run(debug=True,port = 5001)
-    FlaskUI(app=app, server="flask",width=1300, height=780).run()
+    app.run(debug=True)
+    # FlaskUI(app=app, server="flask",width=1300, height=780).run()
