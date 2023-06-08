@@ -29,7 +29,8 @@ $(document).ready(function(){
     //plus and minus sign
     var click_delay = 50;
 
-    var cnt_depth = $('#depth .count')
+    var cnt_depth = $('#depth .count');
+    let plus_id = 0,minus_id = 0;
     $('#depth .plus').mousedown(function(){
         console.log("mousedown");
         let str = parseInt(cnt_depth.text());
@@ -38,9 +39,16 @@ $(document).ready(function(){
             cnt_depth.text(str+"cm");
             console.log("plus");
         },click_delay)
-    }).mouseup(()=>{
+    })
+    $('#depth .plus').mouseup(()=>{
         console.log("mouseup");
         clearInterval(plus_id);
+        console.log("cleared interval");
+    });
+    $('#depth .plus').mouseleave(()=>{
+        console.log("mouseleave");
+        clearInterval(plus_id);
+        console.log("cleared interval");
     });
 
     $('#depth .minus').mousedown(()=>{
@@ -55,8 +63,13 @@ $(document).ready(function(){
             cnt_depth.text(str+"cm");
             console.log("minus");
         },click_delay)
-    }).mouseup(()=>{
+    })
+    $('#depth .minus').mouseup(()=>{
         console.log("mouseup");
+        clearInterval(minus_id);
+    });
+    $('#depth .minus').mouseleave(()=>{
+        console.log("mouseleave");
         clearInterval(minus_id);
     });
 
@@ -71,7 +84,11 @@ $(document).ready(function(){
             }
             cnt_gain.text(str+"%");
         },click_delay)
-    }).mouseup(()=>{
+    })
+    $('#gain .plus').mouseup(()=>{
+        clearInterval(plus_id);
+    });
+    $('#gain .plus').mouseleave(()=>{
         clearInterval(plus_id);
     });
 
@@ -85,7 +102,12 @@ $(document).ready(function(){
             }
             cnt_gain.text(str+"%");
         },click_delay)
-    }).mouseup(()=>{
+    })
+
+    $('#gain .minus').mouseup(()=>{
+        clearInterval(minus_id);
+    });
+    $('#gain .minus').mouseleave(()=>{
         clearInterval(minus_id);
     });
 
