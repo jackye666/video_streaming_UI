@@ -274,6 +274,8 @@ $(document).ready(function(){
         topic.text(data.category[cur_id]);
         let tmp = (cur_id+1) + " of "+data.position.length+", Next "+ data.category [cur_id+1];
         subtitle.text(tmp);
+
+        $(".subdropdown,.dropdown-content").hide();
     })
 
  });
