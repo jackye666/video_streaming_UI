@@ -7,7 +7,7 @@ app = Flask(__name__,
         static_folder='static')#this is important for flask to read your css file, without indication of static url path and folder, css file won't be read properly.
 
 # camera = cv2.VideoCapture(-1)  # use 0 for web camera
-camera = cv2.VideoCapture('static/video/1.mp4')
+camera = cv2.VideoCapture(0)
 # ui = FlaskUI(app,width=1400, height=980)
 # for cctv camera use rtsp://username:password@ip_address:554/user=username_password='password'_channel=channel_number_stream=0.sdp' instead of camera
 # for local webcam use cv2.VideoCapture(0)
@@ -40,9 +40,12 @@ def index():
 
 @app.route('/img_name')
 def get_img_name():
-    img_list = {"name":["PLAX","PSAX-AV","PSAX-MV","PSAX-PM","AP4","AP5","AP2","None"],\
-        "diagram":["d1","d2","d3","d4","d5","d6","d7","None"],"position":["p1","p234","p234","p234","p5","p5","p5"]}
-    return jsonify(img_list)
+    # img_list = {"name":["PLAX","PSAX-AV","PSAX-MV","PSAX-PM","AP4","AP5","AP2","None"],\
+        # "diagram":["d1","d2","d3","d4","d5","d6","d7","None"],"position":["p1","p234","p234","p234","p5","p5","p5"]}
+    img_list = {"PLAX":{"category":["PLAX","None"],"diagram":["d1"],"position":["p1"]},\
+                "PSAX":{"category":["PSAX-AV","PSAX-MV","PSAX-PM","None"],"diagram":["d2","d3","d4","None"],"position":["p234","p234","p234"]},\
+                "AP":{"category":["AP2","AP4","AP5","None"],"diagram":["d7","d5","d6","None"],"position":["p5","p5","p5"]}    }
+    return img_list
 
 
 if __name__ == '__main__':

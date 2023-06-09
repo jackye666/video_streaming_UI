@@ -46,15 +46,35 @@
             <div class ="setting_page">
                 
                 <div class="setting_header">
-                    <div><h4>Go to All Views</h4></div>
+                    <div class="header_txt"><h4>Go to All Views</h4></div>
                     
-                    <button class="arrow-button"></button>
+                    <button class="arrow-button" id="dropdown"></button>
+                    <div class="dropdown-content">
+                        <a id = "PLAX" href="#">PLAX</a>
+                        <a id = "PSAX"href="#">PSAX</a>
+                        <a id = "AP" href="#">AP</a>
+                    </div>
+                    <div class="subdropdown PLAX">
+                        <a href="#">PLAX</a>
+                    </div>
+                    <div class="subdropdown PSAX">
+                        <a href="#">PSAX-AV</a>
+                        <a href="#">PSAX-MV</a>
+                        <a href="#">PSAX-PM</a>
+                    </div>
+                    <div class="subdropdown AP">
+                        <a href="#">AP2</a>
+                        <a href="#">AP4</a>
+                        <a href="#">AP5</a>
+                    </div>
+                    
                 </div>
+                
                 <div class = "setting_topics">
-                    <h3>PLAX</h3>
+                    <h3>Default</h3>
                     <div class="bt-select">
                         <button class="arrow-button to-left" id="toleft"></button>
-                        <span>1 of 5, Next PSAX-AV</span>
+                        <span>1 of 1, Next None</span>
                         <button class="arrow-button to-right" id="toright"></button>
                     </div>
                     <div class ="img_display">
