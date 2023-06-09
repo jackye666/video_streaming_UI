@@ -8,7 +8,7 @@ var FALL = false;
 name_lst = ["PLAX","PSAX","AP"]
 var img_lst;
 var cur_id = 0;
-var name_id = 1;
+var name_id = 0;
 
 function isMouseOverElement(event, element) {
     var mouseX = event.pageX;
