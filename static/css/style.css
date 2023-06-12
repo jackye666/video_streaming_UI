@@ -5,6 +5,7 @@ html,body{
     height:100%;
     width:100%;
     /* border: 1px solid red; */
+    font-family: Arial, sans-serif;
 }
 .background{
     background-color: black;
@@ -109,6 +110,35 @@ html,body{
     flex-direction: column;
 }
 
+.save-page{
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    width: 30%;
+    height: 10%;
+    transform: translate(-50%,0);
+    text-align: center;
+}
+
+.save-page button{
+    border: 2px solid #fffaf0;;
+    background-color: #1e90ff;
+    color: #fffaf0;;
+    height: 100%;
+    width: 100%;
+    border-radius: 30px;
+    font-size: 25px;
+    /* font-family: 'Courier New', Courier, monospace; */
+}
+.save-page button:hover{
+    background-color: #0075e9;
+}
+
+.save-page button:active{
+    background-color: #034e80;
+}
+
+
 .header{
     text-align: center;
     font-size: 1rem;
@@ -132,6 +162,8 @@ html,body{
 .setting_header .header_txt{
     flex: 1;
     /* border: 1px solid red; */
+    top: 5px;
+    position: relative;
 }
 
 
@@ -179,6 +211,7 @@ html,body{
     display: none;
     position: absolute;
     background-color: #f1f1f1;
+    /* background-color: rgba(0,123,255,.5); */
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 2;
@@ -191,7 +224,10 @@ html,body{
   text-decoration: none;
   display: block;
 }
-
+#dropdown:hover{
+    background-color: #3087fc;
+    border: 0.5px solid #9898a9;
+}
 /* #dropdown:hover {border: 2px solid red;} */
 /* #dropdown:hover +.dropdown-content {display: block;} */
 .dropdown-content a:hover {background-color: #ddd;}

@@ -226,7 +226,7 @@ $(document).ready(function(){
         $("."+name).show();
         let offset = $("#"+name).offset();
         $("."+name).css("top",offset.top+"px");
-        $("."+name).css("right",offset.right-2+"px");
+        $("."+name).css("right",offset.right-3+"px");
     })
 
     $(".dropdown-content a").mouseleave((event)=>{
@@ -276,7 +276,18 @@ $(document).ready(function(){
         subtitle.text(tmp);
 
         $(".subdropdown,.dropdown-content").hide();
-    })
+    });
+
+
+    $(".save-page button").click(()=>{
+        $.ajax({
+            url: "/save_img",
+            method:"GET",
+            success: function(response){
+                alert("Frame Saved!");
+            }
+        });
+    });
 
  });
 

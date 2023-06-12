@@ -11,8 +11,12 @@ camera = cv2.VideoCapture(0)
 # ui = FlaskUI(app,width=1400, height=980)
 # for cctv camera use rtsp://username:password@ip_address:554/user=username_password='password'_channel=channel_number_stream=0.sdp' instead of camera
 # for local webcam use cv2.VideoCapture(0)
+isSave = False
+saved_folder = "saved_frame"
 
 def gen_frames():  # generate frame by frame from camera
+    global isSave
+    frame_count = 0
     while True:
         # Capture frame-by-frame
         success, frame = camera.read()  # read the camera frame
@@ -21,6 +25,10 @@ def gen_frames():  # generate frame by frame from camera
         else:
             # print(frame.shape)
             frame = cv2.resize(frame, (640,480))
+            if isSave:
+                cv2.imwrite(f'{saved_folder}/frame_{frame_count}.jpg',frame)
+                isSave=False
+            frame_count+=1
             ret, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
@@ -46,6 +54,13 @@ def get_img_name():
                 "PSAX":{"category":["PSAX-AV","PSAX-MV","PSAX-PM","None"],"diagram":["d2","d3","d4","None"],"position":["p234","p234","p234"]},\
                 "AP":{"category":["AP2","AP4","AP5","None"],"diagram":["d7","d5","d6","None"],"position":["p5","p5","p5"]}    }
     return img_list
+
+@app.route('/save_img')
+def save_img():
+    global isSave
+    isSave = True
+    return "Saved"
+
 
 
 if __name__ == '__main__':
