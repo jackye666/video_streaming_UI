@@ -22,9 +22,9 @@ mv_pred = "hold"
 
 def gen_pred():
     global mv_pred
-    mvs = ["x+","x-","z+","z-"]
+    mvs = ["x+","x-","z+","z-","y-","y+"]
     while True:
-        i = random.randint(0,3)
+        i = random.randint(0,len(mvs)-1)
         with threading.Lock():
             mv_pred = mvs[i]
         time.sleep(2)
