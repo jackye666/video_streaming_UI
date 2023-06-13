@@ -6,6 +6,10 @@ html,body{
     width:100%;
     /* border: 1px solid red; */
     font-family: Arial, sans-serif;
+    -webkit-user-select: none;
+}
+img{
+    pointer-events: none;
 }
 .background{
     background-color: black;
@@ -37,6 +41,9 @@ html,body{
    width: 20%;
    height:30%; 
    z-index: 5;
+}
+.lu-widget img{
+    height: 40%;
 }
 
 .ru-widget{
