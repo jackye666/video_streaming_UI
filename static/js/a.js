@@ -289,6 +289,31 @@ $(document).ready(function(){
         });
     });
 
+    function handle_gif(img_url){
+        // console.log(img_url);
+        // let complete = document.getElementById("gif").complete;
+        // while(!complete){
+
+        // }
+        // console.log("complete!",$("#gif").attr("src"))
+        $("#gif").attr("src",img_url);
+        // console.log((document.getElementById("gif").complete));
+    }
+    setInterval(()=>{
+        $.ajax({
+            url:"/move_prediction",
+            method:"GET",
+            success: function(response){
+                console.log(response);
+                var img_url = `static/gif/${response}.gif`;
+                // $("#gif").attr("src",img_url);
+                $("#gif").on("load",handle_gif(img_url));
+                // $("#gif").off("load.myNamespace")
+            }
+        })
+    },3000)
+
+
  });
 
 

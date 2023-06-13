@@ -1,6 +1,11 @@
 from flask import Flask, render_template, Response, url_for, jsonify
 import cv2
 from flaskwebgui import FlaskUI
+import sys
+import threading
+import random
+import time
+import keyboard
 
 app = Flask(__name__,
         static_url_path='/static',
@@ -13,6 +18,24 @@ camera = cv2.VideoCapture(0)
 # for local webcam use cv2.VideoCapture(0)
 isSave = False
 saved_folder = "saved_frame"
+mv_pred = "hold"
+
+def gen_pred():
+    global mv_pred
+    mvs = ["x+","x-","y+","y-"]
+    while True:
+        i = random.randint(0,3)
+        with threading.Lock():
+            mv_pred = mvs[i]
+        time.sleep(2)
+        print(mv_pred)
+        
+        if keyboard.is_pressed('i'):
+            print("Interrupted!")
+            break
+        
+    print("END")
+    return
 
 def gen_frames():  # generate frame by frame from camera
     global isSave
@@ -61,8 +84,19 @@ def save_img():
     isSave = True
     return "Saved"
 
+@app.route('/move_prediction')
+def get_move_pred():
+    return mv_pred
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
-    # FlaskUI(app=app, server="flask",width=1300, height=780).run()
+    # print(sys.argv)
+    thread1 = threading.Thread(target=gen_pred)
+    thread1.start()
+        
+    argv = sys.argv
+    if len(argv) > 1 and sys.argv[1] == "gui":
+        FlaskUI(app=app, server="flask",width=1300, height=780).run()
+    else:
+        app.run(debug=True)
+    
