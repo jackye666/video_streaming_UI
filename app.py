@@ -6,6 +6,7 @@ import threading
 import random
 import time
 import keyboard
+import argparse
 
 app = Flask(__name__,
         static_url_path='/static',
@@ -93,10 +94,17 @@ if __name__ == '__main__':
     # print(sys.argv)
     thread1 = threading.Thread(target=gen_pred)
     thread1.start()
-        
-    argv = sys.argv
-    if len(argv) > 1 and sys.argv[1] == "gui":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-g","--gui",action="store_true",help="GUI mode")
+    args = parser.parse_args()
+    # argv = sys.argv
+    # if len(argv) > 1 and sys.argv[1] == "gui":
+    #     FlaskUI(app=app, server="flask",width=1300, height=780).run()
+    # else:
+    #     app.run(debug=True)
+    if args.gui:
         FlaskUI(app=app, server="flask",width=1300, height=780).run()
     else:
         app.run(debug=True)
+        
     
