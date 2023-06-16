@@ -19,7 +19,7 @@ function updateHTMLProgress(value) {
     if(offset < 0){
         offset = offset%360+360;
     }
-    console.log(offset);
+    // console.log(offset);
     meter.style.strokeDashoffset = offset; 
     $(".score").text(100 - Math.round(100 * offset/360)+5);
 }
@@ -57,6 +57,7 @@ function isMouseOverElement(event, element) {
 meter_id = 0
 function startUpdateScore(){
     meter.style.strokeDashoffset = 360;
+    document.getElementById("bg-circle").style.fill = "#897b66";
     meter_id = setInterval(updateScore, 50);
 }
 
@@ -81,16 +82,24 @@ function updateScore(){
             writable: false,
             configurable: false
         });
+        document.getElementById("bg-circle").style.fill = "rgb(195,162,111)";
         setTimeout(()=>{
             startUpdateScore();
         },3000);
 
     }
 }
-  
+
+
+var size = [window.width,window.height];   
 
 
 $(document).ready(function(){
+    $(window).resize(function(){
+        console.log("resize!")
+        window.resizeTo(1300,780);
+        console.log("restored!")
+    });
     $.ajax({
         url: "/img_name",
         method: "GET",
