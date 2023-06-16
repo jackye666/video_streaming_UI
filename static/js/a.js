@@ -311,7 +311,7 @@ $(document).ready(function(){
                 // $("#gif").off("load.myNamespace")
             }
         })
-    },3000)
+    },5000)
 
 
  });

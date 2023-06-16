@@ -13,7 +13,8 @@ app = Flask(__name__,
         static_folder='static')#this is important for flask to read your css file, without indication of static url path and folder, css file won't be read properly.
 
 # camera = cv2.VideoCapture(-1)  # use 0 for web camera
-camera = cv2.VideoCapture(0)
+file = "static/video/out_slow.mp4"
+camera = cv2.VideoCapture(file)
 # ui = FlaskUI(app,width=1400, height=980)
 # for cctv camera use rtsp://username:password@ip_address:554/user=username_password='password'_channel=channel_number_stream=0.sdp' instead of camera
 # for local webcam use cv2.VideoCapture(0)
@@ -40,12 +41,17 @@ def gen_pred():
 
 def gen_frames():  # generate frame by frame from camera
     global isSave
+    global camera
     frame_count = 0
     while True:
         # Capture frame-by-frame
+        # if not camera.isOpend():
+            
+            # cv2.VideoCapture("static/video/out_slow.mp4")
         success, frame = camera.read()  # read the camera frame
         if not success:
-            break
+            # break
+            camera = cv2.VideoCapture(file)
         else:
             # print(frame.shape)
             frame = cv2.resize(frame, (640,480))
@@ -55,6 +61,7 @@ def gen_frames():  # generate frame by frame from camera
             frame_count+=1
             ret, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
+            time.sleep(0.05)
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
 
@@ -91,7 +98,6 @@ def get_move_pred():
 
 
 if __name__ == '__main__':
-    # print(sys.argv)
     thread1 = threading.Thread(target=gen_pred)
     thread1.start()
     parser = argparse.ArgumentParser()
