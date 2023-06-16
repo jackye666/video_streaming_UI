@@ -19,6 +19,14 @@
                     <img id="gif" src ="static/gif/x+.gif" >
                 </div>
                 <div class="ru-widget">
+                    <svg>
+                        <circle class="bg" cx="57" cy="57" r="52" />
+                        <circle id="meter" class="meter-1" cx="57" cy="57" r="52" />
+                    </svg>
+                    <h4 class="score-title">Scores:</h4>
+                    <br>
+                    <h5 class="score">0</h5>
+                    <!--<button onclick = "updateHTMLProgress(5)">+</button>-->
                 </div>
                 <div class="ld-widget">
                     <span class="subtitle">Depth</span>
@@ -40,7 +48,7 @@
                 <div class="screen">
                     <h class = "header">Live Streaming</h>
                     <br>
-                    <img class = "camera" src="{{ url_for('video_feed') }}">
+                    <img id = "camera_id"class = "camera" src="{{ url_for('video_feed') }}">
                 </div>
                 <div class = "save-page">
                     <button>Save</button>

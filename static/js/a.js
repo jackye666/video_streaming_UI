@@ -10,6 +10,20 @@ var img_lst;
 var cur_id = 0;
 var name_id = 0;
 
+let meter = document.getElementById("meter");
+meter.style.strokeDashoffset = 360;
+function updateHTMLProgress(value) {
+    
+    const maxOffset = 360; // Maximum stroke-dashoffset value
+    const offset =  meter.style.strokeDashoffset - value/100 * maxOffset;
+    if(offset < 0){
+        offset = offset%360+360;
+    }
+    console.log(offset);
+    meter.style.strokeDashoffset = offset; 
+    $(".score").text(100 - Math.round(100 * offset/360)+5);
+}
+
 function isMouseOverElement(event, element) {
     var mouseX = event.pageX;
     var mouseY = event.pageY;
@@ -29,6 +43,51 @@ function isMouseOverElement(event, element) {
     );
   }
 
+
+  function sleep(milliseconds) {
+    const startTime = Date.now();
+    const endTime = startTime + milliseconds;
+    let currentTime = startTime;
+  
+    while (currentTime < endTime) {
+      currentTime = Date.now();
+    }
+  }
+  
+meter_id = 0
+function startUpdateScore(){
+    meter.style.strokeDashoffset = 360;
+    meter_id = setInterval(updateScore, 50);
+}
+
+function updateScore(){
+    if(meter.style.strokeDashoffset/360 > 0.6)
+        updateHTMLProgress(1);
+    else{
+        let p = Math.random();
+        if(p > 0.7){
+            updateHTMLProgress(-1);
+        }
+        else{
+            updateHTMLProgress(1);
+        }
+    }
+    if(meter.style.strokeDashoffset < 30){
+        clearInterval(meter_id);
+        // alert("Perfect ultrasound Imaging");
+        // sleep(3000);
+        const imageElement = document.getElementById('camera_id');
+        Object.defineProperty(imageElement, 'src', {
+            writable: false,
+            configurable: false
+        });
+        setTimeout(()=>{
+            startUpdateScore();
+        },3000);
+
+    }
+}
+  
 
 
 $(document).ready(function(){
@@ -313,6 +372,7 @@ $(document).ready(function(){
         })
     },5000)
 
+    startUpdateScore();
 
  });
 

@@ -56,6 +56,50 @@ img{
    z-index: 5;
 }
 
+.ru-widget svg {
+    width: 114px;
+    height:114px;
+    margin: 1em;
+    /* border: 1px solid red; */
+  }
+  
+  .bg {
+    fill: none;
+    stroke-width: 10px;
+    stroke: #1A2C34;
+  }
+  
+  .meter-1 {
+    fill: none;
+    stroke-width: 10px;
+    stroke-linecap: round;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    
+  }
+  
+  .meter-1 {
+    stroke-dasharray: 360;
+    stroke-dashoffset: 360;
+    stroke: blanchedalmond;
+  }
+  
+.score-title{
+    color:blanchedalmond;
+    position: absolute;
+    top:30%;
+    right:50%;
+    transform:translate(50%,-50%);
+}
+
+.score{
+    position: absolute;
+    top: 40%;
+    right: 50%;
+    transform: translate(50%,-50%);
+    color: blanchedalmond;
+}
+
 .ld-widget{
     position: absolute;
     left:10px;
