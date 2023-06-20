@@ -13,8 +13,9 @@ app = Flask(__name__,
         static_folder='static')#this is important for flask to read your css file, without indication of static url path and folder, css file won't be read properly.
 
 # camera = cv2.VideoCapture(-1)  # use 0 for web camera
-file = "static/video/out_slow.mp4"
-camera = cv2.VideoCapture(file)
+# file = "static/video/out_slow.mp4"
+# camera = cv2.VideoCapture(file)
+camera = ""
 # ui = FlaskUI(app,width=1400, height=980)
 # for cctv camera use rtsp://username:password@ip_address:554/user=username_password='password'_channel=channel_number_stream=0.sdp' instead of camera
 # for local webcam use cv2.VideoCapture(0)
@@ -24,7 +25,7 @@ mv_pred = "hold"
 
 def gen_pred():
     global mv_pred
-    mvs = ["x+","x-","z+","z-","y-","y+"]
+    mvs = ["hold","x+","x-","z+","z-","y-","y+"]
     while True:
         i = random.randint(0,len(mvs)-1)
         with threading.Lock():
@@ -102,12 +103,15 @@ if __name__ == '__main__':
     thread1.start()
     parser = argparse.ArgumentParser()
     parser.add_argument("-g","--gui",action="store_true",help="GUI mode")
+    parser.add_argument("-c","--camera",action="store_true",help="Using camera")
     args = parser.parse_args()
     # argv = sys.argv
     # if len(argv) > 1 and sys.argv[1] == "gui":
     #     FlaskUI(app=app, server="flask",width=1300, height=780).run()
     # else:
     #     app.run(debug=True)
+    file = 0 if args.camera else "static/video/out_slow.mp4"
+    camera = cv2.VideoCapture(file)
     if args.gui:
         FlaskUI(app=app, server="flask",width=1300, height=780).run()
     else:

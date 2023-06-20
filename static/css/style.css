@@ -48,6 +48,19 @@ img{
     left: 10%;
 }
 
+.mv-arrow{
+    display: none;
+    /* border-right: 3px solid blue;
+    border-top: 3px solid blue; */
+    z-index: 5;
+    position: absolute;
+    height: 2vh;
+    width: 2vh;
+    /* transform: rotate(45deg); */
+    /* top: 30%; */
+    /* left: 30%; */
+}
+
 .ru-widget{
    position: absolute;
    right:10px;
@@ -199,7 +212,7 @@ img{
 .header{
     text-align: center;
     font-size: 1rem;
-    color: yellow;
+    color: #A65146;
 }
 
 .camera{

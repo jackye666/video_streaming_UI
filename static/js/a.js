@@ -355,28 +355,94 @@ $(document).ready(function(){
         });
     });
 
-    function handle_gif(img_url){
-        // console.log(img_url);
-        // let complete = document.getElementById("gif").complete;
-        // while(!complete){
-
-        // }
-        // console.log("complete!",$("#gif").attr("src"))
-        $("#img-base").attr("src",img_url);
-        // console.log((document.getElementById("gif").complete));
-    }
     first = true;
+    var mvar_mv ,mvar_rst;
+    var pos_args = {"hold":{"left":0.38,"top":0.5,"v_t":0,"v_l":1,"css":{
+                                                        "border-top":"3px solid blue",
+                                                        "border-right": "3px solid blue",
+                                                        "transform":"rotate(45deg)"
+                                                    }},
+                    "y+":{"left":0.38,"top":0.5,"v_t":0,"v_l":1,"css":{
+                                                        "border-top":"3px solid blue",
+                                                        "border-right": "3px solid blue",
+                                                        "transform":"rotate(45deg)"
+                                                    }},
+                    "y-":{"left":0.62,"top":0.5,"v_t":0,"v_l":-1,"css":{
+                                                        "border-top":"3px solid blue",
+                                                        "border-right": "3px solid blue",
+                                                        "transform":"rotate(-135deg)"
+                                                    }},
+                    "z+":{"left":0.21,"top":0.55,"v_t":1,"v_l":0,"css":{
+                                                        "border-top":"3px solid blue",
+                                                        "border-right": "3px solid blue",
+                                                        "transform":"rotate(135deg)"
+                                                    }},
+                    "z-":{"left":0.21,"top":0.75,"v_t":-1,"v_l":0,"css":{
+                                                        "border-top":"3px solid blue",
+                                                        "border-right": "3px solid blue",
+                                                        "transform":"rotate(-45deg)"
+                                                    }},
+                    "x+":{"left":0.3,"top":0.425,"v_t":-0.7071,"v_l":0.7071,"css":{
+                                                        "border-top":"3px solid blue",
+                                                        "border-right": "3px solid blue",
+                                                        "transform":"rotate(0deg)"
+                                                    }},
+                    "x-":{"left":0.4,"top":0.325,"v_t":0.7071,"v_l":-0.7071,"css":{
+                                                        "border-top":"3px solid blue",
+                                                        "border-right": "3px solid blue",
+                                                        "transform":"rotate(-180deg)"
+                                                    }}
+                                                }
     setInterval(()=>{
         $.ajax({
             url:"/move_prediction",
             method:"GET",
             success: function(response){
                 console.log(response);
-                var img_url = `static/gif/${response}.gif`;
-                var img_url = 'static/gif/z+.png';
-                // $("#gif").attr("src",img_url);
-                
-                $("#img-base").on("load",handle_gif(img_url));
+                // var img_url = 'static/mv_img/hold.png';
+                clearInterval(mvar_mv);
+                clearInterval(mvar_rst);
+                $(".mv-arrow").show();
+                if(response == "hold"){
+                    $(".mv-arrow").hide();
+                }
+                // $("#img-base").on("load",handle_gif(img_url));
+                var img = $("#img-base");
+                var arw = $(".mv-arrow");
+                // console.log(img.position().top,parseInt(img.height()),parseInt(img.width()));
+                // response = "x-";
+                var left =  img.position().left + img.width() *pos_args[response].left;
+                var top = img.position().top + img.height()*pos_args[response].top;
+                console.log(left,top);
+                arw.css(pos_args[response].css);
+                console.log(pos_args[response].css);
+                arw.css({
+                    "top":top+"px",
+                    "left":left+"px",
+                });
+                var speed = 15;
+
+                mvar_mv = setInterval(()=>{
+                    let l = parseFloat(arw.css("left"));
+                    let t = parseFloat(arw.css("top"));
+                    l += pos_args[response].v_l*speed;
+                    t += pos_args[response].v_t*speed;
+                    arw.css({
+                        "left":l+"px",
+                        "top" :t+"px"
+                     });   
+                },500);
+
+                mvar_rst = setInterval(()=>{
+                    arw.css({
+                        "top":top+"px",
+                        "left":left+"px"
+                    });
+                },1000);
+
+
+
+
                 // if($("#img-mv").length){
                 //     $("#img-mv").remove();
                 //     $("#img-base").css("opacity","1.0");
@@ -400,7 +466,7 @@ $(document).ready(function(){
                 // $("#gif").off("load.myNamespace")
             }
         })
-    },5000)
+    },3000)
 
     startUpdateScore();
 
