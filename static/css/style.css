@@ -12,7 +12,7 @@ img{
     pointer-events: none;
 }
 .background{
-    background-color: black;
+    background-color:#d2a56d;/*#897b66;/*black;*/
     z-index: 0;
     height: 100%;
     display: flex;
@@ -43,7 +43,9 @@ img{
    z-index: 5;
 }
 .lu-widget img{
-    height: 40%;
+    position: absolute;
+    height: 60%;
+    left: 10%;
 }
 
 .ru-widget{
@@ -160,6 +162,10 @@ img{
     justify-content: center;
     flex-direction: column;
 }
+.screen h{
+    font-size: 5vh;
+    font-family: Taviraj;
+}
 
 .save-page{
     position: absolute;
@@ -223,6 +229,11 @@ img{
     /* border: 1px solid red; */
     height: 100%;
     color: #fffaf0;
+}
+
+.setting_topics h3{
+    border:1px solid wheat;
+    padding: 0.5em;
 }
 
 .img_display img{
@@ -408,7 +419,7 @@ div {
 }
 
 .qty.mt-5 span.count{
-    background-color: black;
+    background-color: inherit;
     color:#055b76;
     /* border:1px solid green; */
     padding-left:0px;

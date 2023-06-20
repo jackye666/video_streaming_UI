@@ -91,8 +91,6 @@ function updateScore(){
 }
 
 
-var size = [window.width,window.height];   
-
 
 $(document).ready(function(){
     $(window).resize(function(){
@@ -364,9 +362,10 @@ $(document).ready(function(){
 
         // }
         // console.log("complete!",$("#gif").attr("src"))
-        $("#gif").attr("src",img_url);
+        $("#img-base").attr("src",img_url);
         // console.log((document.getElementById("gif").complete));
     }
+    first = true;
     setInterval(()=>{
         $.ajax({
             url:"/move_prediction",
@@ -374,8 +373,30 @@ $(document).ready(function(){
             success: function(response){
                 console.log(response);
                 var img_url = `static/gif/${response}.gif`;
+                var img_url = 'static/gif/z+.png';
                 // $("#gif").attr("src",img_url);
-                $("#gif").on("load",handle_gif(img_url));
+                
+                $("#img-base").on("load",handle_gif(img_url));
+                // if($("#img-mv").length){
+                //     $("#img-mv").remove();
+                //     $("#img-base").css("opacity","1.0");
+                // }
+                // if(!(response == "hold")){
+                //     console.log("img Move");
+                //     $("#img-base").css("opacity","0.4");
+                // }
+                // var img_mv = $("<img>")
+                //     .attr("src",img_url)
+                //     .attr("id","img-mv")
+                //     .css({
+                //         "top":"20%"
+                //     });
+                // // if(first){
+                // //     first = false;
+                // //     $(".lu-widget").append(img_mv);
+                // // }
+                // $(".lu-widget").append(img_mv);
+                
                 // $("#gif").off("load.myNamespace")
             }
         })
