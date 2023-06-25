@@ -46,6 +46,7 @@ img{
     position: absolute;
     height: 60%;
     left: 10%;
+    z-index: 3;
 }
 
 .mv-arrow{
@@ -60,6 +61,38 @@ img{
     /* top: 30%; */
     /* left: 30%; */
 }
+
+.rotation{
+    display: inline-block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    /* border: 1px solid #ccc; */
+}
+
+.rotation-arrow {
+    offset-distance: 0%;
+    /* offset-path: path('M 0, 10 A 15,10 0 1 0 30, 10'); */
+    animation: move 2s linear forwards infinite;
+    /* transform: translate(20px,30px); */
+  }
+
+.lu-widget svg{
+    position: absolute;
+    left:14%;
+    top: 32%;
+    height: 15%;
+    width: auto;
+    /* z-index: 5; */
+    display: none;
+    transform: translate(-50%, 0);
+}
+
+@keyframes move {
+    100%{
+        offset-distance: 100%;
+    }
+} 
 
 .ru-widget{
    position: absolute;

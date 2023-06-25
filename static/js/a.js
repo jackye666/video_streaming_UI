@@ -391,81 +391,106 @@ $(document).ready(function(){
                                                         "border-top":"3px solid blue",
                                                         "border-right": "3px solid blue",
                                                         "transform":"rotate(-180deg)"
-                                                    }}
-                                                }
+                                                    }},
+                    "z_c":{
+
+                    }
+                }
     setInterval(()=>{
         $.ajax({
             url:"/move_prediction",
             method:"GET",
             success: function(response){
                 console.log(response);
+                // response = "z_a";
                 // var img_url = 'static/mv_img/hold.png';
                 clearInterval(mvar_mv);
                 clearInterval(mvar_rst);
-                $(".mv-arrow").show();
-                if(response == "hold"){
-                    $(".mv-arrow").hide();
+                $(".mv-arrow").hide();
+                $(".rotation").hide();
+
+                switch(response){
+                    case "hold":
+                        break;
+                    case "x+":
+                    case "x-":
+                    case "y+":
+                    case "y-":
+                    case "z+":
+                    case "z-":
+                        $(".mv-arrow").show();
+                        // $("#img-base").on("load",handle_gif(img_url));
+                        var img = $("#img-base");
+                        var arw = $(".mv-arrow");
+                        // console.log(img.position().top,parseInt(img.height()),parseInt(img.width()));
+                        var left =  img.position().left + img.width() *pos_args[response].left;
+                        var top = img.position().top + img.height()*pos_args[response].top;
+                        console.log(left,top);
+                        arw.css(pos_args[response].css);
+                        console.log(pos_args[response].css);
+                        arw.css({
+                            "top":top+"px",
+                            "left":left+"px",
+                        });
+                        var speed = 15;
+
+                        mvar_mv = setInterval(()=>{
+                            let l = parseFloat(arw.css("left"));
+                            let t = parseFloat(arw.css("top"));
+                            l += pos_args[response].v_l*speed;
+                            t += pos_args[response].v_t*speed;
+                            arw.css({
+                                "left":l+"px",
+                                "top" :t+"px"
+                             });   
+                        },500);
+
+                        mvar_rst = setInterval(()=>{
+                            arw.css({
+                                "top":top+"px",
+                                "left":left+"px"
+                            });
+                        },1000);
+                    
+                    case "z_a":
+                        var svg = $(".rotation");
+                        var img = $("#img-base");
+                        svg.show();
+                        var left =  img.position().left + img.width() *(pos_args["z+"].left+0.05);
+                        var top = img.position().top + img.height()*pos_args["z+"].top;
+                        svg.css({
+                            "top":top+"px",
+                            "left":left+"px",
+                            "z-index":"6"
+                        })
+
+                        $(".rotation-arrow").css({
+                            "offset-path":"path('M 0, 10 A 15,10 0 1 0 30, 10')",
+                        });
+                        $("#ellipse").attr("d",'M 0, 10 A 15,10 0 1 0 30, 10');
+                        break;
+                    case "z_c":
+                        var svg = $(".rotation");
+                        var img = $("#img-base");
+                        svg.show();
+                        var left =  img.position().left + img.width() *(pos_args["z-"].left+0.05);
+                        var top = img.position().top + img.height()*pos_args["z-"].top;
+                        svg.css({
+                            "top":top+"px",
+                            "left":left+"px",
+                            "z-index":"2"
+                        })
+
+                        $(".rotation-arrow").css({
+                            "offset-path":"path('M 0, 10 A 15,10 0 1 1 30, 10')",
+                        })
+                        $("#ellipse").attr("d",'M 0, 10 A 15,10 0 1 1 30, 10');
+                        break;
+
                 }
-                // $("#img-base").on("load",handle_gif(img_url));
-                var img = $("#img-base");
-                var arw = $(".mv-arrow");
-                // console.log(img.position().top,parseInt(img.height()),parseInt(img.width()));
-                // response = "x-";
-                var left =  img.position().left + img.width() *pos_args[response].left;
-                var top = img.position().top + img.height()*pos_args[response].top;
-                console.log(left,top);
-                arw.css(pos_args[response].css);
-                console.log(pos_args[response].css);
-                arw.css({
-                    "top":top+"px",
-                    "left":left+"px",
-                });
-                var speed = 15;
 
-                mvar_mv = setInterval(()=>{
-                    let l = parseFloat(arw.css("left"));
-                    let t = parseFloat(arw.css("top"));
-                    l += pos_args[response].v_l*speed;
-                    t += pos_args[response].v_t*speed;
-                    arw.css({
-                        "left":l+"px",
-                        "top" :t+"px"
-                     });   
-                },500);
-
-                mvar_rst = setInterval(()=>{
-                    arw.css({
-                        "top":top+"px",
-                        "left":left+"px"
-                    });
-                },1000);
-
-
-
-
-                // if($("#img-mv").length){
-                //     $("#img-mv").remove();
-                //     $("#img-base").css("opacity","1.0");
-                // }
-                // if(!(response == "hold")){
-                //     console.log("img Move");
-                //     $("#img-base").css("opacity","0.4");
-                // }
-                // var img_mv = $("<img>")
-                //     .attr("src",img_url)
-                //     .attr("id","img-mv")
-                //     .css({
-                //         "top":"20%"
-                //     });
-                // // if(first){
-                // //     first = false;
-                // //     $(".lu-widget").append(img_mv);
-                // // }
-                // $(".lu-widget").append(img_mv);
-                
-                // $("#gif").off("load.myNamespace")
             }
-        })
+        });
     },3000)
 
     startUpdateScore();
