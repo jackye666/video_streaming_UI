@@ -358,51 +358,78 @@ $(document).ready(function(){
     first = true;
     var mvar_mv ,mvar_rst;
     var pos_args = {"hold":{"left":0.38,"top":0.5,"v_t":0,"v_l":1,"css":{
-                                                        "border-top":"3px solid blue",
-                                                        "border-right": "3px solid blue",
+                                                        // "border-top":"3px solid blue",
+                                                        // "border-right": "3px solid blue",
                                                         "transform":"rotate(45deg)"
                                                     }},
                     "y+":{"left":0.38,"top":0.5,"v_t":0,"v_l":1,"css":{
-                                                        "border-top":"3px solid blue",
-                                                        "border-right": "3px solid blue",
+                                                        // "border-top":"3px solid blue",
+                                                        // "border-right": "3px solid blue",
                                                         "transform":"rotate(45deg)"
                                                     }},
                     "y-":{"left":0.62,"top":0.5,"v_t":0,"v_l":-1,"css":{
-                                                        "border-top":"3px solid blue",
-                                                        "border-right": "3px solid blue",
+                                                        // "border-top":"3px solid blue",
+                                                        // "border-right": "3px solid blue",
                                                         "transform":"rotate(-135deg)"
                                                     }},
                     "z+":{"left":0.21,"top":0.55,"v_t":1,"v_l":0,"css":{
-                                                        "border-top":"3px solid blue",
-                                                        "border-right": "3px solid blue",
+                                                        // "border-top":"3px solid blue",
+                                                        // "border-right": "3px solid blue",
                                                         "transform":"rotate(135deg)"
                                                     }},
                     "z-":{"left":0.21,"top":0.75,"v_t":-1,"v_l":0,"css":{
-                                                        "border-top":"3px solid blue",
-                                                        "border-right": "3px solid blue",
+                                                        // "border-top":"3px solid blue",
+                                                        // "border-right": "3px solid blue",
                                                         "transform":"rotate(-45deg)"
                                                     }},
                     "x+":{"left":0.3,"top":0.425,"v_t":-0.7071,"v_l":0.7071,"css":{
-                                                        "border-top":"3px solid blue",
-                                                        "border-right": "3px solid blue",
+                                                        // "border-top":"3px solid blue",
+                                                        // "border-right": "3px solid blue",
                                                         "transform":"rotate(0deg)"
                                                     }},
                     "x-":{"left":0.4,"top":0.325,"v_t":0.7071,"v_l":-0.7071,"css":{
-                                                        "border-top":"3px solid blue",
-                                                        "border-right": "3px solid blue",
+                                                        // "border-top":"3px solid blue",
+                                                        // "border-right": "3px solid blue",
                                                         "transform":"rotate(-180deg)"
                                                     }},
-                    "z_c":{
-
-                    }
+                    "z_c":{"left":0.26,"top":0.53,"path":"M 0, 10 A 15,10 0 1 0 30, 10",
+                            "arw_path":"M 30, 10 A 15,10 0 1 1 0, 10","rotate":0},
+                    "z_a":{"left":0.26,"top":0.53,"path":"M 0, 10 A 15,10 0 1 0 30, 10",
+                            "arw_path":"M 0, 10 A 15,10 0 1 0 30, 10","rotate":0},
+                    "y_c":{"left":0.65,"top":0.45,"path":"M 0, 10 A 15,10 0 1 0 30, 10",
+                            "arw_path":"M 30, 10 A 15,10 0 1 1 0, 10","rotate":90},
+                    "y_a":{"left":0.65,"top":0.45,"path":"M 0, 10 A 15,10 0 1 0 30, 10",
+                            "arw_path":"M 0, 10 A 15,10 0 1 0 30, 10","rotate":90},
+                    "x_c":{"left":0.46,"top":0.34,"path":"M 0, 10 A 15,10 0 1 1 30, 10",
+                            "arw_path":"M 0, 10 A 15,10 0 1 1 30, 10","rotate":45},
+                    "x_a":{"left":0.46,"top":0.34,"path":"M 0, 10 A 15,10 0 1 1 30, 10",
+                            "arw_path":"M 30, 10 A 15,10 0 1 0 0, 10","rotate":45}
                 }
+                // var target = "x_a";
+                // $("#l_i").keydown(function(event){
+                //     if(event.which == 13){
+                //         let value = $("#l_i").val();
+                //         console.log(value);
+                        
+                //         pos_args[target].left = value;
+                //         // pos_args[target].top = 0.8-value;
+                //     }
+                // })
+                // $("#t_i").keydown(function(event){
+                //     if(event.which == 13){
+                //         let value = $("#t_i").val();
+                //         console.log(value);
+                //         pos_args[target].top = value;
+                //     }
+                // })
+
     setInterval(()=>{
         $.ajax({
             url:"/move_prediction",
             method:"GET",
             success: function(response){
                 console.log(response);
-                // response = "z_a";
+                // response = "x_a";
                 // var img_url = 'static/mv_img/hold.png';
                 clearInterval(mvar_mv);
                 clearInterval(mvar_rst);
@@ -451,42 +478,35 @@ $(document).ready(function(){
                                 "left":left+"px"
                             });
                         },1000);
-                    
+                        break;
                     case "z_a":
-                        var svg = $(".rotation");
-                        var img = $("#img-base");
-                        svg.show();
-                        var left =  img.position().left + img.width() *(pos_args["z+"].left+0.05);
-                        var top = img.position().top + img.height()*pos_args["z+"].top;
-                        svg.css({
-                            "top":top+"px",
-                            "left":left+"px",
-                            "z-index":"6"
-                        })
-
-                        $(".rotation-arrow").css({
-                            "offset-path":"path('M 0, 10 A 15,10 0 1 0 30, 10')",
-                        });
-                        $("#ellipse").attr("d",'M 0, 10 A 15,10 0 1 0 30, 10');
-                        break;
                     case "z_c":
+                    case "y_a":
+                    case "y_c":
+                    case "x_a":
+                    case "x_c":
                         var svg = $(".rotation");
                         var img = $("#img-base");
                         svg.show();
-                        var left =  img.position().left + img.width() *(pos_args["z-"].left+0.05);
-                        var top = img.position().top + img.height()*pos_args["z-"].top;
+                        var left =  img.position().left + img.width() *(pos_args[response].left);
+                        var top = img.position().top + img.height()*pos_args[response].top;
                         svg.css({
                             "top":top+"px",
                             "left":left+"px",
-                            "z-index":"2"
+                            // "z-index":(pos_args[response].z_index).toString(),
+                            "transform":`translate(-50%, 0) rotate(${pos_args[response].rotate}deg)`,
+                            'height':"15%"
                         })
-
+                        console.log("path('"+pos_args[response].path+"')",
+                                    pos_args[response].path)
                         $(".rotation-arrow").css({
-                            "offset-path":"path('M 0, 10 A 15,10 0 1 1 30, 10')",
-                        })
-                        $("#ellipse").attr("d",'M 0, 10 A 15,10 0 1 1 30, 10');
+                            "offset-path":`path('${pos_args[response].arw_path}')`
+                        });
+                        $("#ellipse").attr("d",pos_args[response].path);
+                        if(response[0] == "x"){
+                            svg.css("height","8%");
+                        }
                         break;
-
                 }
 
             }

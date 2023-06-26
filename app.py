@@ -25,8 +25,8 @@ mv_pred = "hold"
 
 def gen_pred():
     global mv_pred
-    # mvs = ["hold","x+","x-","z+","z-","y-","y+","z_c","z_a"]
-    mvs = ["z_c","z_a"]
+    mvs = ["hold","x+","x-","z+","z-","y-","y+","z_c","z_a","y_c","y_a","x_a","x_c"]
+    # mvs = ["x_c","x_a"  ]
     while True:
         i = random.randint(0,len(mvs)-1)
         with threading.Lock():

@@ -51,8 +51,8 @@ img{
 
 .mv-arrow{
     display: none;
-    /* border-right: 3px solid blue;
-    border-top: 3px solid blue; */
+    border-right: 3px solid #00FFFF;
+    border-top: 3px solid #00FFFF;
     z-index: 5;
     position: absolute;
     height: 2vh;
@@ -72,8 +72,8 @@ img{
 
 .rotation-arrow {
     offset-distance: 0%;
-    /* offset-path: path('M 0, 10 A 15,10 0 1 0 30, 10'); */
-    animation: move 2s linear forwards infinite;
+    /* offset-path: path('M 0, 10 A 15,10 0, 0 0, 30, 10 '); */
+    animation: move 2s linear forwards infinite ;
     /* transform: translate(20px,30px); */
   }
 
@@ -83,9 +83,9 @@ img{
     top: 32%;
     height: 15%;
     width: auto;
-    /* z-index: 5; */
+    z-index: 6;
     display: none;
-    transform: translate(-50%, 0);
+    /* transform: translate(-50%, 0) rotate(90deg); */
 }
 
 @keyframes move {
