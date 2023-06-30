@@ -23,10 +23,14 @@ isSave = False
 saved_folder = "saved_frame"
 mv_pred = "hold"
 
-def gen_pred():
+def true_pred():
     global mv_pred
-    mvs = ["hold","x+","x-","z+","z-","y-","y+","z_c","z_a","y_c","y_a","x_a","x_c"]
-    # mvs = ["x_c","x_a"  ]
+    return 
+
+def sim_pred():
+    global mv_pred
+    # mvs = ["hold","x+","x-","z+","z-","y-","y+","z_c","z_a","y_c","y_a","x_a","x_c"]
+    mvs = ["z_c","z_a","y_c","y_a","x_a","x_c"  ]
     while True:
         i = random.randint(0,len(mvs)-1)
         with threading.Lock():
@@ -34,9 +38,9 @@ def gen_pred():
         time.sleep(2)
         print(mv_pred)
         
-        if keyboard.is_pressed('i'):
-            print("Interrupted!")
-            break
+        # if keyboard.is_pressed('i'):
+        #     print("Interrupted!")
+        #     break
         
     print("END")
     return
@@ -100,12 +104,19 @@ def get_move_pred():
 
 
 if __name__ == '__main__':
-    thread1 = threading.Thread(target=gen_pred)
-    thread1.start()
+    # thread1 = threading.Thread(target=gen_pred)
+    # thread1.start()
     parser = argparse.ArgumentParser()
     parser.add_argument("-g","--gui",action="store_true",help="GUI mode")
     parser.add_argument("-c","--camera",action="store_true",help="Using camera")
+    parser.add_argument("-s","--simulate",action="store_true",help="Simulate model inference")
     args = parser.parse_args()
+    if args.simulate:
+        thread1 = threading.Thread(target=sim_pred)
+        thread1.start()
+    else:
+        thread2 = threading.Thread(target=true_pred)
+        thread2.start()
     # argv = sys.argv
     # if len(argv) > 1 and sys.argv[1] == "gui":
     #     FlaskUI(app=app, server="flask",width=1300, height=780).run()
