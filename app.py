@@ -5,7 +5,6 @@ import sys
 import threading
 import random
 import time
-import keyboard
 import argparse
 
 app = Flask(__name__,
@@ -42,18 +41,12 @@ def sim_pred():
         #     print("Interrupted!")
         #     break
         
-    print("END")
-    return
 
 def gen_frames():  # generate frame by frame from camera
     global isSave
     global camera
     frame_count = 0
     while True:
-        # Capture frame-by-frame
-        # if not camera.isOpend():
-            
-            # cv2.VideoCapture("static/video/out_slow.mp4")
         success, frame = camera.read()  # read the camera frame
         if not success:
             # break
@@ -114,14 +107,6 @@ if __name__ == '__main__':
     if args.simulate:
         thread1 = threading.Thread(target=sim_pred)
         thread1.start()
-    else:
-        thread2 = threading.Thread(target=true_pred)
-        thread2.start()
-    # argv = sys.argv
-    # if len(argv) > 1 and sys.argv[1] == "gui":
-    #     FlaskUI(app=app, server="flask",width=1300, height=780).run()
-    # else:
-    #     app.run(debug=True)
     file = 0 if args.camera else "static/video/out_slow.mp4"
     camera = cv2.VideoCapture(file)
     if args.gui:
