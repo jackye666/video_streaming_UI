@@ -421,11 +421,11 @@ def appshow(queue):
     global camera
     global inference
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-g", "--gui", action="store_true", help="GUI mode")
-    parser.add_argument("-c", "--camera", action="store_true", help="Using camera")
-    parser.add_argument("-s", "--simulate", action="store_true", help="Simulate model inference")
-    args = parser.parse_args()
+    # parser = argparse.ArgumentParser()
+    # parser.add_argument("-g", "--gui", action="store_true", help="GUI mode")
+    # parser.add_argument("-c", "--camera", action="store_true", help="Using camera")
+    # parser.add_argument("-s", "--simulate", action="store_true", help="Simulate model inference")
+    # args = parser.parse_args()
     inference = Infer(model_path='/media/robotics1/WD_2T/sunyu_data/models/6.29.pth', num_class=6, queue=queue)
     if args.simulate:
         thread1 = threading.Thread(target=sim_pred)
@@ -440,6 +440,12 @@ def appshow(queue):
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-g", "--gui", action="store_true", help="GUI mode")
+    parser.add_argument("-c", "--camera", action="store_true", help="Using camera")
+    parser.add_argument("-s", "--simulate", action="store_true", help="Simulate model inference")
+    args = parser.parse_args()
+       
     queue = mp.Queue()  # Create a shared queue
 
     # Start the camera process
