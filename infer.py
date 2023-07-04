@@ -1,7 +1,7 @@
 from std_msgs.msg import Int64, Float64MultiArray
 from franka_msgs.msg import FrankaState
 from scipy.spatial.transform import Rotation
-from torchvision import transforms, models
+from torchvision import models
 import os
 import rospy
 import logging
@@ -52,39 +52,39 @@ def calib_angle(ee_position):
     return res
 
 
-
 class Infer():
-    def __init__(self, model_path, num_class, queue):
+    def __init__(self, model_path, num_class):
         self.model_path = model_path
         self.num_class = num_class
         self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-        self.queue = queue
+        self.model = self.__load_model__()
 
     def __load_model__(self):
-        self.model = models.resnet34()
-        self.model.fc = nn.Sequential(
-            nn.Linear(self.model.fc.in_features, 256),
+        model = models.resnet34()
+        model.fc = nn.Sequential(
+            nn.Linear(model.fc.in_features, 256),
             nn.Dropout(0.4),
             nn.Linear(256, self.num_class))
-        self.model.load_state_dict(torch.load(self.model_path))
-        self.model.to(self.device)
-        self.model.eval()
-        return self.model
+        model.load_state_dict(torch.load(self.model_path))
+        model.to(self.device)
+        model.eval()
+        warm_x = torch.randn(30, 3, 224, 224).cuda()
+        warm_out = model(warm_x)
+        return model
 
     def __call__(self, tensor):
-        model = self.__load_model__()
         tensor = tensor.cuda() if torch.cuda.is_available() else tensor
-        outputs = model(tensor)
+        outputs = self.model(tensor)
         outputs, _ = torch.sort(outputs, dim=0)
         outputs = outputs[5:25, :]
         outputs = torch.mean(outputs, dim=0).tolist()
         action = self.rpy2action(outputs)
         outputs = [x / 1000 for x in outputs[:3]] + [x * math.pi / 180 for x in outputs[3:]]
-        self.queue.put(outputs)
-        return action
+        return action, outputs
 
     def rpy2action(self, rpy: list):
         action_list = [["x+", "x-"], ["y+", "y-"], ["z+", "z-"], ["x_c", "x_a"], ["y_c", "y_a"], ["z_c", "z_a"]]
+        msg = ["x+", "x-", "y+", "y-", "z+", "z-", "x_c", "x_a", "y_c", "y_a", "z_c", "z_a"]
         max_stride = max([abs(x) for x in rpy])
         max_stride = max_stride if max_stride in rpy else -max_stride
         dim_action = rpy.index(max_stride)
@@ -93,10 +93,11 @@ class Infer():
         else:
             a = 0
         action = action_list[dim_action][a]
-        return action
+        action_num = msg.index(action)
+        return action_num
 
 class ArtificialSonographer:
-    def __init__(self):
+    def __init__(self, l, send_flag):
         # read probe angle, ee_position exists when flag_position=True
         self.flag_angle = False
         self.ee_position = None
@@ -118,6 +119,8 @@ class ArtificialSonographer:
         self.flag_moving = False
         self.ee_force = None
         self.stop_signal = 0
+        self.l = l
+        self.send_flag = send_flag
 
     def Franka_cb(self, data):
         # read end effector position
@@ -167,11 +170,6 @@ class ArtificialSonographer:
             pass
 
     def action_control(self, msg):
-        '''
-        > Indicating action finish when receiving a full list of 1
-          with length 'self.signal_len'
-        > change self.signal_len for optimal performance
-        '''
         self.signal_list.append(msg.data)
         self.logger.debug(f'* signal data: {msg.data} *')
         if len(self.signal_list) > self.signal_len:
@@ -179,17 +177,17 @@ class ArtificialSonographer:
 
         if self.flag_move and not self.stride == 1000:
             self.flag_move = False
-            # self.pub.publish(self.stride)
-            # self.pub.publish(self.action)
             self.signal_list = []
             self.flag_moving = True
 
         if self.flag_moving and self.signal_list == [1] * self.signal_len:
+            self.l.acquire()
+            self.send_flag.value = 1
+            self.l.release()
             self.flag_moving = False
             self.flag_scan = True
 
     def init_log(self, log_root):
-        # dir and name
         _, script_name = os.path.split(__file__)
         script_name_aff, _ = script_name.split('.')
         log_dir = os.path.join(log_root, script_name_aff)
@@ -217,10 +215,11 @@ class ArtificialSonographer:
         self.logger = logger
 
 
-def control(queue):
+def control(queue, l, act, send_flag):
+    inference = Infer(model_path='/media/robotics1/WD_2T/sunyu_data/models/6.29.pth', num_class=6)
     ros_rate = 30  # Hz, for ros
     root = '/media/robotics1/WD_G_2T'
-    aisono = ArtificialSonographer()  # AI Sonographer
+    aisono = ArtificialSonographer(l, send_flag)  # AI Sonographer
     aisono.stride = 1001
     aisono.init_log(log_root=os.path.join(root, 'logs'))
     aisono.logger.info(f'\n{"=" * 64}\n {"Auto Echocardiography".center(60)}\n{"-" * 64}\n\n'
@@ -262,10 +261,12 @@ def control(queue):
             continue
 
         if not aisono.flag_moving and aisono.flag_scan:
-            
-            # outputs = [x / 1000 for x in outputs[:3]] + [0, 0, 0]
-            # outputs = [round(x, 5) for x in outputs]
-            outputs = queue.get()
+            fuse_tensor = queue.get()
+            with torch.no_grad():
+                action, outputs = inference(fuse_tensor)
+                l.acquire()
+                act.value = action
+                l.release()
             stop_inference_signal = [x for x in outputs[:3] if abs(x) > 0.002]
             # print(stop_inference_signal)
             if len(stop_inference_signal) == 0:
@@ -278,6 +279,7 @@ def control(queue):
             aisono.logger.info(f'=> publish message: {outputs}')
             aisono.pub2.publish(vector_msg)
             aisono.flag_move = True
+            aisono.flag_infrn = False
 
         rate.sleep()
 
