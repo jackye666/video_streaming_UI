@@ -10,15 +10,16 @@ var camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHe
 // camera.position.set( 0, 0, 30 );
 
  // Load a Renderer
-var renderer = new THREE.WebGLRenderer({ alpha: false });
-renderer.setClearColor( 0xC5C5C3 );
+var renderer = new THREE.WebGLRenderer({ alpha: true });
+// renderer.setClearColor( 0xC5C5C3 );
+renderer.setClearColor( 0x000000,0 );
 renderer.setPixelRatio( window.devicePixelRatio );
 // renderer.setSize(window.innerWidth, window.innerHeight);
 var width;
 var height;
 width = $("#canvas-container").width();
 height = $("#canvas-container").height();
-renderer.setSize(width, 500);
+renderer.setSize(width, height);
 console.log(width,height);
 document.getElementById("canvas-container").appendChild(renderer.domElement);
 // document.body.appendChild(renderer.domElement);
@@ -59,7 +60,7 @@ object = gltf.scene;
 object.scale.set( 2, 2, 2 );	
 object.position.set(0,0,0);		   
 
-camera.position.set(0, 0, 5); // Adjust the position as per your needs
+
 scene.add( gltf.scene );
 renderer.render(scene, camera);
 
@@ -68,10 +69,12 @@ const modelCenter = modelBoundingBox.getCenter(new THREE.Vector3());
 const modelSize = modelBoundingBox.getSize(new THREE.Vector3());
 
 // Calculate a distance based on the size of the model
-const cameraDistance = Math.max(modelSize.x, modelSize.y, modelSize.z) * 1.5;
+const cameraDistance = Math.max(modelSize.x, modelSize.y, modelSize.z) * 1.2;
 
 camera.position.set(modelCenter.x, modelCenter.y, modelCenter.z + cameraDistance);
-// camera.position.set(modelSize.x/2,modelSize.y/2,modelCenter.z/2+cameraDistance);
+// camera.position.set(modelSize.x/2,modelSize.y/2,modelCenter.z/2+cameraDistance)
+console.log(modelCenter);
+// camera.lookAt(new THREE.Vector3(modelCenter.x-modelSize.y/2,modelCenter.y+modelSize.y/2,modelCenter.z));
 camera.lookAt(modelCenter);
 // camera.lookAt(new THREE.Vector3(0,0,cameraDistance));
 // const translationVector = new THREE.Vector3();
@@ -82,14 +85,14 @@ camera.lookAt(modelCenter);
 // camera.rotation.y = pi/2+0.3;
 console.log(object.position)
 
-object.rotation.x = pi/2;
+// object.rotation.x = pi/2;
 // object.rotation.z = (55)/180*pi;
-object.position.y += 100;
-object.rotation.y = pi;
+// object.position.y += 200;
+// object.rotation.y = pi;
 render();
 animate();
 });	 
-// camera.rotation.y= pi/2;
+camera.rotation.y= pi/2;
 // camera.rotation.x= pi/2;
 
 function animate() {
