@@ -156,6 +156,7 @@ if __name__ == '__main__':
     # Wait for processes to finish
     if args.simulate:
         thread1 = threading.Thread(target=sim_pred)
+        thread1.daemon = True
         thread1.start()
     file = 3 if args.camera else "static/video/out_slow.mp4"
     camera = cv2.VideoCapture(file)
