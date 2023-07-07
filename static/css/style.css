@@ -42,12 +42,6 @@ img{
    height:30%; 
    z-index: 5;
 }
-.lu-widget img{
-    position: absolute;
-    height: 60%;
-    left: 10%;
-    z-index: 3;
-}
 
 #canvas-container{
     position: absolute;

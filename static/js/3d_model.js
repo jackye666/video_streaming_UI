@@ -3,11 +3,15 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 
+var position_init = {}
+var rotation_init = {};
 var scene = new THREE.Scene(); 
 var pi = 3.14;
  // Load Camera Perspektive
-var camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 0.1, 20000 );
+var camera = new THREE.PerspectiveCamera( 100, window.innerWidth / window.innerHeight, 0.1, 20000 );
 // camera.position.set( 0, 0, 30 );
+camera.aspect = 0.8;
+camera.updateProjectionMatrix();
 
  // Load a Renderer
 var renderer = new THREE.WebGLRenderer({ alpha: true });
@@ -22,18 +26,6 @@ height = $("#canvas-container").height();
 renderer.setSize(width, height);
 console.log(width,height);
 document.getElementById("canvas-container").appendChild(renderer.domElement);
-// document.body.appendChild(renderer.domElement);
-
- // Load the Orbitcontroller
-// var controls = new OrbitControls( camera, renderer.domElement ); 
-
- // Load Light
-// var ambientLight = new THREE.AmbientLight( 0xcccccc );
-// scene.add( ambientLight );
-    
-// var directionalLight = new THREE.DirectionalLight( 0xffffff );
-// directionalLight.position.set( 0, 1, 1 ).normalize();
-// scene.add( directionalLight );	
 
 // Create an ambient light
 const ambientLight = new THREE.AmbientLight(0xffffff, 1 ); // Color: white, Intensity: 0.5
@@ -85,14 +77,21 @@ camera.lookAt(modelCenter);
 // camera.rotation.y = pi/2+0.3;
 console.log(object.position)
 
-// object.rotation.x = pi/2;
+
+
+object.rotation.x = -pi/2;
 // object.rotation.z = (55)/180*pi;
-// object.position.y += 200;
+object.rotation.z = pi/2;
+object.position.y = 150;
+// object.rotation.y = -pi/2;
 // object.rotation.y = pi;
+position_init = JSON.parse(JSON.stringify(object.position));
+console.log(position_init);
+rotation_init = JSON.parse(JSON.stringify(object.rotation));
 render();
 animate();
 });	 
-camera.rotation.y= pi/2;
+// camera.rotation.y= pi/2;
 // camera.rotation.x= pi/2;
 
 function animate() {
@@ -100,19 +99,48 @@ function animate() {
     requestAnimationFrame( animate );
     }
 
-function render() {
-    
-    object.rotation.z+=0.01;
-    // object.rotation.y+=0.01;
+var mv_pred = "hold";
+var updated = false;
+setInterval(()=>{
+    $.ajax({
+        url:"/move_prediction",
+        method:"GET",
+        success: function(response){
+            console.log("3d move is "+ response);
+            mv_pred = response;
+            updated = true;
+        }
+    });
+},3000);
+var prev = "hold";
 
-    // camera.rotation.y -= pi/2*0.005;
-    // console.log(camera.rotation.x,camera.rotation.y,camera.rotation.z);
-    // object.position.z -= 0.1;
-    // if(object.position.z < -10){
-    //     object.position.z = 10;
-    // }
-    // // camera.rotation.y+= pi/180;
-    // object.position.x += 0.05;
+function render() {
+    // mv_pred = "hold";
+    switch(mv_pred){
+        case "x+":
+        case "x-":
+        case "y+":
+        case "y-":
+        case "z+":
+        case "z-":
+            var axis = mv_pred[0];
+            var dir = mv_pred[1] == "+" ? 1:-1;
+            console.log("axis is "+axis, "dir is "+dir);
+            if(updated && prev!= "hold"){
+                console.log("prev",object.position);
+                object.position[prev[0]] = position_init[prev[0]];
+                updated =false;
+                console.log("updated",object.position);
+                
+            }
+            object.position[axis] += dir*0.1;
+            if (dir*(object.position[axis] - position_init[axis]) >= 50){
+                object.position[axis] = position_init[axis];
+            }
+            prev = mv_pred;
+            break;
+    }    
+
     renderer.render( scene, camera );
     }
 
