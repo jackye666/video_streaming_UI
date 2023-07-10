@@ -10,6 +10,16 @@ var pi = 3.14;
  // Load Camera Perspektive
 var camera = new THREE.PerspectiveCamera( 100, window.innerWidth / window.innerHeight, 0.1, 20000 );
 // camera.position.set( 0, 0, 30 );
+
+// $("#canvas-container canvas").css({
+//     "display": "block",
+//     "width": "50%",
+//     "height": "50%",
+//     "margin-top": "20%",
+//     "margin-left": "20%",
+// });
+
+
 camera.aspect = 0.8;
 camera.updateProjectionMatrix();
 
@@ -40,9 +50,18 @@ const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.5); // Color: w
 directionalLight2.position.set(-1, -1, -1); // Set position
 scene.add(directionalLight2);
 
-// $(document).ready(function(){
-//      $("canvas").css({"height":"50%"});
-// })
+
+
+
+
+$("#canvas-container canvas").css({
+    "display": "block",
+    "width": "50%",
+    "height": "50%",
+    "margin-top": "20%",
+    "margin-left": "20%",
+});
+
  // glTf 2.0 Loader
 var object;
 var loader = new GLTFLoader();				
@@ -139,6 +158,33 @@ function render() {
             }
             prev = mv_pred;
             break;
+
+        // case "x_a":
+        // case "x_c":
+        // case "y_a":
+        // case "y_c":
+        // case "z_a":
+        // case "z_c":
+        //     var axis = mv_pred[0];
+        //     var dir = mv_pred[2] == "c" ? 1:-1;
+        //     console.log("axis is "+axis, "dir is "+dir);
+        //     if(updated && prev!= "hold"){
+        //         console.log("prev",object.position);
+        //         object.position = {...position_init};
+        //         object.rotation
+        //         updated =false;
+        //         console.log("updated",object.position);
+                
+        //     }
+        //     object.rotation[axis] = 
+        //     object.rotation[axis] += dir*0.1;
+        //     if (dir*(object.position[axis] - position_init[axis]) >= 50){
+        //         object.position[axis] = position_init[axis];
+        //     }
+        //     prev = mv_pred;
+        //     break;
+        case "hold":
+            object.position = {...position_init};
     }    
 
     renderer.render( scene, camera );
