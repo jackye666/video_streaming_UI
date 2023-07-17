@@ -151,7 +151,10 @@ i=0
 def get_quality_score():
     global i
     i+=1
-    val = 30+i/5
+    val = 0+i/5
+    if val >= 100:
+        i = 0
+        val = 0 + i/5
     return str(val)
 
 if __name__ == '__main__':
