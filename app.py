@@ -48,12 +48,14 @@ def gen_frames():  # generate frame by frame from camera
     global isSave
     global camera
     global mv_pred
+    global QS
     global file
     global args
     global queue
     global l
     global act
     global send_flag
+    global quality_score
     frame_count = 0
     max_frame = 0
     msg = ["x+", "x-", "y+", "y-", "z+", "z-", "x_c", "x_a", "y_c", "y_a", "z_c", "z_a", "hold"]
@@ -96,6 +98,7 @@ def gen_frames():  # generate frame by frame from camera
                 if send_flag.value:
                     max_frame = -1
                     mv_pred = msg[act.value]
+                    QS = quality_score.value
                     l.acquire()
                     send_flag.value = 0
                     l.release()
@@ -143,14 +146,23 @@ def save_img():
 def get_move_pred():
     return mv_pred
 
+i=0
+@app.route("/get_score")
+def get_quality_score():
+    global i
+    i+=1
+    val = 30+i/5
+    return str(val)
+
 if __name__ == '__main__':
     queue = mp.Queue()  # Create a shared queue
     l = mp.Lock()  # 定义一个进程锁
-    act = mp.Value('i', -1)
-    send_flag = mp.Value('i', 0)
+    act = mp.Value('i', -1)   # 当前影像需要执行的动作
+    send_flag = mp.Value('i', 0)   # 默认False，每次预测机械臂运动结束后为True，来执行下一次操作
+    quality_score = mp.Value('i', 0)   # 质量得分
     if not args.simulate:
         from infer import control
-        processing = mp.Process(target=control, args=(queue, l, act, send_flag))
+        processing = mp.Process(target=control, args=(queue, l, act, send_flag, quality_score))
         processing.start()
 
     # Wait for processes to finish
@@ -158,7 +170,7 @@ if __name__ == '__main__':
         thread1 = threading.Thread(target=sim_pred)
         thread1.daemon = True
         thread1.start()
-    file = 3 if args.camera else "static/video/out_slow.mp4"
+    file = 1 if args.camera else "static/video/out_slow.mp4"
     camera = cv2.VideoCapture(file)
     if args.gui:
         FlaskUI(app=app, server="flask", width=1300, height=780).run()

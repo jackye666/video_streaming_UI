@@ -15,13 +15,10 @@ meter.style.strokeDashoffset = 360;
 function updateHTMLProgress(value) {
     
     const maxOffset = 360; // Maximum stroke-dashoffset value
-    const offset =  meter.style.strokeDashoffset - value/100 * maxOffset;
-    if(offset < 0){
-        offset = offset%360+360;
-    }
-    // console.log(offset);
+    const offset =  360- value/100 * maxOffset;
+    console.log(offset);
     meter.style.strokeDashoffset = offset; 
-    $(".score").text(100 - Math.round(100 * offset/360)+5);
+    $(".score").text(value);
 }
 
 function isMouseOverElement(event, element) {
@@ -249,14 +246,23 @@ $(document).ready(function(){
             method:"GET",
             success: function(response){
                 alert("Frame Saved!");
-                $(this).button("reset");
+                // $(this).button("reset");
             }
         });
     });
 
-
-
-    startUpdateScore();
+    // var quality_score = 0;
+    setInterval(()=>{
+        $.ajax({
+            url:"/get_score",
+            method:"GET",
+            success: function(response){
+                // console.log("score is "+ response);
+                updateHTMLProgress(parseFloat(response));
+            }
+        });
+    },50);
+    // startUpdateScore();
 
  });
 

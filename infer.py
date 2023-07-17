@@ -2,6 +2,7 @@ from std_msgs.msg import Int64, Float64MultiArray
 from franka_msgs.msg import FrankaState
 from scipy.spatial.transform import Rotation
 from torchvision import models
+from torch.nn import functional as F
 import os
 import rospy
 import logging
@@ -58,6 +59,7 @@ class Infer():
         self.num_class = num_class
         self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
         self.model = self.__load_model__()
+        self.QSmodel = self.__load_QSmodel__()
 
     def __load_model__(self):
         model = models.resnet34()
@@ -72,15 +74,30 @@ class Infer():
         warm_out = model(warm_x)
         return model
 
+    def __load_QSmodel__(self):
+        model = models.resnet34()
+        model.fc = nn.Sequential(
+            nn.Linear(model.fc.in_features, 256),
+            nn.Dropout(0.4),
+            nn.Linear(256, 2))
+        model.load_state_dict(torch.load('/media/robotics1/WD_2T/sunyu_data/models/QS_model.pth'))
+        model.to(self.device)
+        model.eval()
+        warm_x = torch.randn(30, 3, 224, 224).cuda()
+        warm_out = model(warm_x)
+        return model
+
     def __call__(self, tensor):
         tensor = tensor.cuda() if torch.cuda.is_available() else tensor
+        QS_output = F.softmax(self.QSmodel(tensor), dim=1)
+        Qscore = torch.mean(QS_output, dim=0).tolist()
         outputs = self.model(tensor)
         outputs, _ = torch.sort(outputs, dim=0)
         outputs = outputs[5:25, :]
         outputs = torch.mean(outputs, dim=0).tolist()
         action = self.rpy2action(outputs)
         outputs = [x / 1000 for x in outputs[:3]] + [x * math.pi / 180 for x in outputs[3:]]
-        return action, outputs
+        return action, outputs, Qscore[1]
 
     def rpy2action(self, rpy: list):
         action_list = [["x+", "x-"], ["y+", "y-"], ["z+", "z-"], ["x_c", "x_a"], ["y_c", "y_a"], ["z_c", "z_a"]]
@@ -119,6 +136,8 @@ class ArtificialSonographer:
         self.flag_moving = False
         self.ee_force = None
         self.stop_signal = 0
+        self.move_count = 0
+        self.QScore_threshold = 70
         self.l = l
         self.send_flag = send_flag
 
@@ -166,6 +185,8 @@ class ArtificialSonographer:
                 f'{"-" * 64}\n {">> Start auto inference <<":^60} \n{"-" * 64}\n')
             self.flag_autoinf = True
             self.stop_signal = 0
+            self.move_count = 0
+            self.QScore_threshold = 70
         else:
             pass
 
@@ -215,7 +236,7 @@ class ArtificialSonographer:
         self.logger = logger
 
 
-def control(queue, l, act, send_flag):
+def control(queue, l, act, send_flag, quality_score):
     inference = Infer(model_path='/media/robotics1/WD_2T/sunyu_data/models/6.29.pth', num_class=6)
     ros_rate = 30  # Hz, for ros
     root = '/media/robotics1/WD_G_2T'
@@ -263,14 +284,20 @@ def control(queue, l, act, send_flag):
         if not aisono.flag_moving and aisono.flag_scan:
             fuse_tensor = queue.get()
             with torch.no_grad():
-                action, outputs = inference(fuse_tensor)
+                action, outputs, Qscore = inference(fuse_tensor)
+                Qscore = int(Qscore*100)
                 l.acquire()
                 act.value = action
+                quality_score.value = Qscore
                 l.release()
-            stop_inference_signal = [x for x in outputs[:3] if abs(x) > 0.002]
-            # print(stop_inference_signal)
-            if len(stop_inference_signal) == 0:
+
+            # stop_inference_signal = [x for x in outputs[:3] if abs(x) > 0.002]
+            # if len(stop_inference_signal) == 0:
+            #     aisono.stop_signal += 1
+
+            if Qscore >= aisono.QScore_threshold:
                 aisono.stop_signal += 1
+                
             if aisono.stop_signal == 2:
                 aisono.flag_autoinf = False
                 aisono.flag_infrn = False
@@ -278,6 +305,10 @@ def control(queue, l, act, send_flag):
             vector_msg = Float64MultiArray(data=outputs)
             aisono.logger.info(f'=> publish message: {outputs}')
             aisono.pub2.publish(vector_msg)
+            aisono.move_count += 1
+            if aisono.move_count % 10 == 0:
+                aisono.QScore_threshold -= 10
+
             aisono.flag_move = True
             aisono.flag_infrn = False
 
