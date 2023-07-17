@@ -10,14 +10,6 @@
         
         <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
 
-        <script type="importmap">
-        {
-            "imports": {
-            "three": "https://unpkg.com/three@0.153.0/build/three.module.js",
-            "three/addons/": "https://unpkg.com/three@0.153.0/examples/jsm/"
-            }
-        }
-        </script>
         
         <link rel="stylesheet" href="{{ url_for('static', filename = 'css/style.css') }}" type="text/css">
    </head>
@@ -26,7 +18,7 @@
         <div class="background">
             <div class = "display_page">
                 <div class="lu-widget">
-                    <div id="canvas-container" style = "display: block;"></div>
+                    <!--<div id="canvas-container" style = "display: block;"></div>-->
                 </div>
                 <div class="ru-widget">
                     <svg>
@@ -39,29 +31,26 @@
                     <h5 class="score">0</h5>
                 </div>
                 <div class="ld-widget">
-                    <span class="subtitle">Depth</span>
+                    <!--<span class="subtitle">Depth</span>
                     <div class="qty mt-5" id='depth'>
                         <span class="minus">-</span>
-                        <!--<input type="number" class="count" name="qty" value="1">-->
+                        <input type="number" class="count" name="qty" value="1">
                         <span class="count">0cm</span>
                         <span class="plus ">+</span>
-                    </div>
+                    </div>-->
                 </div>
                 <div class="rd-widget">
-                    <span class="subtitle">Gain</span>
+                    <!--<span class="subtitle">Gain</span>
                     <div class="qty mt-5" id='gain'>
                         <span class="minus">-</span>
                         <span class="count">0%</span>
                         <span class="plus">+</span>
-                    </div>
+                    </div>-->
                 </div>
                 <div class="screen">
                     <h class = "header">Live Streaming</h>
                     <br>
                     <img id = "camera_id"class = "camera" src="{{ url_for('video_feed') }}">
-                </div>
-                <div class = "save-page">
-                    <button>Save</button>
                 </div>
             </div>
             
@@ -103,9 +92,10 @@
                         <img id = "img_dig" src = "{{url_for('static',filename='img/d1.png')}}">
                         <img id = "img_pos" src = "{{url_for('static',filename='img/p1.png')}}">
                     </div>
-                    <div class="exit_exam">
-                        <h5>End Exam</h5>
-                    </div>
+                    <button id="save-btn" class="save-page" >
+                        Save
+                    </button>
+
 
                 </div>
                 

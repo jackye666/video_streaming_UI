@@ -133,6 +133,21 @@ setInterval(()=>{
 },3000);
 var prev = "hold";
 
+// var axises = ["x","y","z"];
+
+// function update_pos_rot(){
+//     for(let axis of axises){
+//         object.rotation[axis] = rotation_init[axis];
+//         object.position[axis] = position_init[axis];
+//     }
+// };
+
+var coordinate_map={
+    "x":{"axis":"x","c":"a","a":"c"}
+
+}
+var cnt = 0;
+
 function render() {
     // mv_pred = "hold";
     switch(mv_pred){
@@ -148,6 +163,7 @@ function render() {
             if(updated && prev!= "hold"){
                 console.log("prev",object.position);
                 object.position[prev[0]] = position_init[prev[0]];
+                // update_pos_rot();
                 updated =false;
                 console.log("updated",object.position);
                 
@@ -159,36 +175,52 @@ function render() {
             prev = mv_pred;
             break;
 
-        // case "x_a":
-        // case "x_c":
-        // case "y_a":
-        // case "y_c":
-        // case "z_a":
-        // case "z_c":
-        //     var axis = mv_pred[0];
-        //     var dir = mv_pred[2] == "c" ? 1:-1;
-        //     console.log("axis is "+axis, "dir is "+dir);
-        //     if(updated && prev!= "hold"){
-        //         console.log("prev",object.position);
-        //         object.position = {...position_init};
-        //         object.rotation
-        //         updated =false;
-        //         console.log("updated",object.position);
+        case "x_a":
+        case "x_c":
+        case "y_a":
+        case "y_c":
+        case "z_a":
+        case "z_c":
+            var raw_axis = mv_pred[0];
+            var raw_dir = mv_pred[2];
+            var axis = coordinate_map[raw_axis].axis;
+            var dir = coordinate_map[raw_axis][raw_dir] == "c" ? 1:-1;
+
+            console.log("axis is "+axis, "dir is "+dir);
+            if(updated && prev!= "hold"){
+                console.log("prev",object.position);
+                // update_pos_rot();
+                // var axises = ["x","y","z"];
+                // for(let axis of axises){
+                //     object.rotation[axis] = rotation_init[axis];
+                //     object.position[axis] = position_init[axis];
+                // }
+
+                updated =false;
+                console.log("updated",object.position, object.rotation);
+                // object.rotation[axis] = rotation_init[axis] - dir*pi/6;
                 
-        //     }
-        //     object.rotation[axis] = 
-        //     object.rotation[axis] += dir*0.1;
-        //     if (dir*(object.position[axis] - position_init[axis]) >= 50){
-        //         object.position[axis] = position_init[axis];
-        //     }
-        //     prev = mv_pred;
-        //     break;
+            }
+            
+            object.rotation[axis] += dir*pi/1000;
+            cnt++;
+            if(cnt >= 20){
+                console.log("rotation:",object.rotation,"init:",rotation_init.x);
+                cnt = 0;
+            }
+            // if (Math.abs(object.rotation[axis] - rotation_init[axis]) >= pi/6){
+            //     object.rotation[axis] = rotation_init[axis];
+            // }
+            prev = mv_pred;
+            break;
         case "hold":
-            object.position = {...position_init};
+            // object.position = JSON.parse(JSON.stringify(position_init));
+            // object.rotation = {...rotation_init};
+            // update_pos_rot();
     }    
 
-    renderer.render( scene, camera );
-    }
+        renderer.render( scene, camera );
+    };
 
 // render();
 // animate(); 

@@ -43,57 +43,6 @@ img{
    z-index: 5;
 }
 
-#canvas-container{
-    position: absolute;
-    border: 1px solid blue;
-    height: 100%;
-    width: 100%;
-}
-
-.mv-arrow{
-    display: none;
-    border-right: 3px solid #00FFFF;
-    border-top: 3px solid #00FFFF;
-    z-index: 5;
-    position: absolute;
-    height: 2vh;
-    width: 2vh;
-    /* transform: rotate(45deg); */
-    /* top: 30%; */
-    /* left: 30%; */
-}
-
-.rotation{
-    display: inline-block;
-    width: 100%;
-    height: auto;
-    overflow: visible;
-    /* border: 1px solid #ccc; */
-}
-
-.rotation-arrow {
-    offset-distance: 0%;
-    /* offset-path: path('M 0, 10 A 15,10 0, 0 0, 30, 10 '); */
-    animation: move 2s linear forwards infinite ;
-    /* transform: translate(20px,30px); */
-  }
-
-.lu-widget svg{
-    position: absolute;
-    left:14%;
-    top: 32%;
-    height: 15%;
-    width: auto;
-    z-index: 6;
-    display: none;
-    /* transform: translate(-50%, 0) rotate(90deg); */
-}
-
-@keyframes move {
-    100%{
-        offset-distance: 100%;
-    }
-} 
 
 .ru-widget{
    position: absolute;
@@ -159,20 +108,8 @@ img{
     z-index: 5;
  }
  
- #depth{
-    /* border: 1px so   lid red; */
-    position: absolute;
-    bottom: 5px;
-    left: 20px;
-}
-.ld-widget .subtitle{
-    color: #f8eeda;
-    /* border: 1px solid green; */
-    font-size: x-large;
-    position: absolute;
-    bottom: 40px;
-    left: 50px;
-}
+
+
 
 .rd-widget{
     position: absolute;
@@ -184,20 +121,6 @@ img{
     z-index: 5;
  }
 
-#gain{
-    /* border: 1px solid red; */
-    position: absolute;
-    bottom: 5px;
-    right: 20px;
-}
-.rd-widget .subtitle{
-    color: #f8eeda;
-    /* border: 1px solid green; */
-    font-size: x-large;
-    position: absolute;
-    bottom: 40px;
-    right: 50px;
-}
 
 .screen{
     width: 100%;
@@ -214,7 +137,7 @@ img{
     font-family: Taviraj;
 }
 
-.save-page{
+/* .save-page{
     position: absolute;
     bottom: 40px;
     left: 50%;
@@ -222,23 +145,28 @@ img{
     height: 10%;
     transform: translate(-50%,0);
     text-align: center;
-}
+} */
 
-.save-page button{
+.save-page{
+    position: absolute;
     border: 2px solid #fffaf0;;
     background-color: #319AE5;
-    color: #f8eeda;/*#F5E6EB;*/
-    height: 100%;
-    width: 100%;
-    border-radius: 30px;
+    color: #f8eeda;
+    height: 8%;
+    width: 50%;
+    border-radius: 15px;
     font-size: 25px;
+    left: 5px;
+    bottom: 5px;
+    /* float: left; */
+    /* margin-bottom: 3px; */
     /* font-family: 'Courier New', Courier, monospace; */
 }
-.save-page button:hover{
+.save-page:hover{
     background-color: #2b95e2;
 }
 
-.save-page button:active{
+.save-page:active{
     background-color: #2675ae;
 }
 

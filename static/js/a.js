@@ -114,112 +114,6 @@ $(document).ready(function(){
     });
 
 
-    //plus and minus sign
-    var click_delay = 50;
-
-    var cnt_depth = $('#depth .count');
-    let plus_id = 0,minus_id = 0;
-    $('#depth .plus').mousedown(function(){
-        console.log("mousedown");
-        let str = parseInt(cnt_depth.text());
-        plus_id = setInterval(()=>{
-            str++;
-            cnt_depth.text(str+"cm");
-            console.log("plus");
-        },click_delay)
-    })
-    $('#depth .plus').mouseup(()=>{
-        console.log("mouseup");
-        clearInterval(plus_id);
-        console.log("cleared interval");
-    });
-    $('#depth .plus').mouseleave(()=>{
-        console.log("mouseleave");
-        clearInterval(plus_id);
-        console.log("cleared interval");
-    });
-
-    $('#depth .minus').mousedown(()=>{
-        console.log("mousedown");
-        let str = parseInt(cnt_depth.text());
-        minus_id = setInterval(()=>{
-            str--;
-            if(str<0){
-                str=0;
-                clearInterval(minus_id);
-            }
-            cnt_depth.text(str+"cm");
-            console.log("minus");
-        },click_delay)
-    })
-    $('#depth .minus').mouseup(()=>{
-        console.log("mouseup");
-        clearInterval(minus_id);
-    });
-    $('#depth .minus').mouseleave(()=>{
-        console.log("mouseleave");
-        clearInterval(minus_id);
-    });
-
-    var cnt_gain = $('#gain .count')
-    $('#gain .plus').mousedown(()=>{
-        let str = parseInt(cnt_gain.text());
-        plus_id = setInterval(()=>{
-            str++;
-            if(str>100){
-                str=100;
-                clearInterval(plus_id);
-            }
-            cnt_gain.text(str+"%");
-        },click_delay)
-    })
-    $('#gain .plus').mouseup(()=>{
-        clearInterval(plus_id);
-    });
-    $('#gain .plus').mouseleave(()=>{
-        clearInterval(plus_id);
-    });
-
-    $('#gain .minus').mousedown(()=>{
-        let str = parseInt(cnt_gain.text());
-        minus_id = setInterval(()=>{
-            str--;
-            if(str<0){
-                str=0;
-                clearInterval(minus_id);
-            }
-            cnt_gain.text(str+"%");
-        },click_delay)
-    })
-
-    $('#gain .minus').mouseup(()=>{
-        clearInterval(minus_id);
-    });
-    $('#gain .minus').mouseleave(()=>{
-        clearInterval(minus_id);
-    });
-
-    setInterval(()=>{
-        if(LEFT){
-            console.log("left");
-        }
-        if(RIGHT){
-            console.log("right");
-        }
-        if(UP){
-            console.log("up");
-        }
-        if(DOWN){
-            console.log("down");
-        }
-        if(RISE){
-            console.log("rise");
-        }
-        if(FALL){
-            console.log("fall");
-        }
-    },100);
-
     // let l = img_lst.position;
     $("#toright").click(()=>{
         let data = img_lst[name_lst[name_id]];
@@ -344,13 +238,18 @@ $(document).ready(function(){
         $(".subdropdown,.dropdown-content").hide();
     });
 
+    $("#save-btn").click(()=>{
+        var button = $(this);
 
-    $(".save-page button").click(()=>{
+        button.prop('disabled', true);
+        button.text('Saving...');
+
         $.ajax({
             url: "/save_img",
             method:"GET",
             success: function(response){
                 alert("Frame Saved!");
+                $(this).button("reset");
             }
         });
     });
