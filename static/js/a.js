@@ -16,7 +16,7 @@ function updateHTMLProgress(value) {
     
     const maxOffset = 360; // Maximum stroke-dashoffset value
     const offset =  360- value/100 * maxOffset;
-    console.log(offset);
+    // console.log(offset);
     meter.style.strokeDashoffset = offset; 
     $(".score").text(value);
 }
@@ -235,6 +235,8 @@ $(document).ready(function(){
         $(".subdropdown,.dropdown-content").hide();
     });
 
+
+
     $("#save-btn").click(()=>{
         var button = $(this);
 
@@ -262,7 +264,25 @@ $(document).ready(function(){
             }
         });
     },50);
-    // startUpdateScore();
+    
+    setInterval(()=>{
+        $.ajax({
+            url:"/move_prediction",
+            method:"GET",
+            success: function(response){
+                // console.log("score is "+ response);
+                $(".gif").attr("src",`static/gif/3d_${response}.gif`);
+            }
+        });
+    },3000);
+
+    var vleft = $(".camera").position().left+1;
+    var vtop = $(".camera").position().top-1;
+    console.log(vleft,vtop);
+    $(".gif").css({
+        "left":vleft,
+        "top":vtop
+    })
 
  });
 

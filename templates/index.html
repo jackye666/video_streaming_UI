@@ -18,7 +18,6 @@
         <div class="background">
             <div class = "display_page">
                 <div class="lu-widget">
-                    <!--<div id="canvas-container" style = "display: block;"></div>-->
                 </div>
                 <div class="ru-widget">
                     <svg>
@@ -31,26 +30,16 @@
                     <h5 class="score">0</h5>
                 </div>
                 <div class="ld-widget">
-                    <!--<span class="subtitle">Depth</span>
-                    <div class="qty mt-5" id='depth'>
-                        <span class="minus">-</span>
-                        <input type="number" class="count" name="qty" value="1">
-                        <span class="count">0cm</span>
-                        <span class="plus ">+</span>
-                    </div>-->
                 </div>
                 <div class="rd-widget">
-                    <!--<span class="subtitle">Gain</span>
-                    <div class="qty mt-5" id='gain'>
-                        <span class="minus">-</span>
-                        <span class="count">0%</span>
-                        <span class="plus">+</span>
-                    </div>-->
                 </div>
                 <div class="screen">
                     <h class = "header">Live Streaming</h>
                     <br>
-                    <img id = "camera_id"class = "camera" src="{{ url_for('video_feed') }}">
+                    <div style="position:relative;">
+                        <img id = "camera_id"class = "camera" src="{{ url_for('video_feed') }}">
+                        <img class="gif"src="{{url_for('static',filename='gif/3d_x-.gif')}}">
+                    </div>
                 </div>
             </div>
             
@@ -92,8 +81,11 @@
                         <img id = "img_dig" src = "{{url_for('static',filename='img/d1.png')}}">
                         <img id = "img_pos" src = "{{url_for('static',filename='img/p1.png')}}">
                     </div>
-                    <button id="save-btn" class="save-page" >
+                    <button id="save-btn" class="save button" >
                         Save
+                    </button>
+                    <button id="pause-btn" class="pause button" >
+                        Pause
                     </button>
 
 
