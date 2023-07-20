@@ -149,13 +149,16 @@ def get_move_pred():
 i=0
 @app.route("/get_score")
 def get_quality_score():
-    global i
-    i+=1
-    val = 0+i/5
-    if val >= 100:
-        i = 0
-        val = 0 + i/5
-    return str(val)
+    if args.simulate:
+        global i
+        i+=1
+        val = 0+i/5
+        if val >= 100:
+            i = 0
+            val = 0 + i/5
+        return str(val)
+    else:
+        return str(QS)
 
 if __name__ == '__main__':
     queue = mp.Queue()  # Create a shared queue
