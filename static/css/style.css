@@ -12,7 +12,7 @@ img{
     pointer-events: none;
 }
 .background{
-    background-color:#D2AC8F;/*#d2a56d;/*#897b66;/*black;*/
+    background-color:black;/*#d2a56d;/*#897b66;/*black;*/
     z-index: 0;
     height: 100%;
     display: flex;
@@ -79,7 +79,7 @@ img{
   .meter-1 {
     stroke-dasharray: 360;
     stroke-dashoffset: 360;
-    stroke: blanchedalmond;
+    stroke: rgb(19,101,138);
   }
   
 .score-title{
@@ -125,7 +125,7 @@ img{
 .screen{
     position: relative;
     width: 100%;
-    height:80%;
+    height:100%;
     /* border: 1px solid blue; */
     z-index: 1;
     display: flex;
@@ -137,17 +137,38 @@ img{
     font-size: 5vh;
     font-family: Taviraj;
 }
+.screen div{
+    position: relative;
+    height: 100%;
+    width: 100%;
+    /* border : 1px solid red; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#arrow_3d{
+    position: absolute;
+    /* top: 17%;
+    left: 22%;
+    height: 4%; */
+    z-index: 6;
+}
 
 .gif{
     position: absolute;
-    width: 33%;
-    height: auto;
+    /* width: 28%; */
+    /* height: auto; */
     left: 0px;
+    /* border: 1px solid green ; */
 }
+
+
+
 .button{
     position: absolute;
     border: 2px solid #fffaf0;;
-    background-color: #319AE5;
+    background-color: rgb(19,101,138);/*#1F4AED;*/
     color: #f8eeda;
     height: 8%;
     width: 45%;
@@ -180,12 +201,14 @@ img{
 }
 
 .camera{
-    border: 1px dashed purple;
+    /* border: 1px dashed purple; */
+    height:90%;
+    width:auto;
 }
 
 .setting_header{
     color: #f8eeda;/*#F5E6EB;*/
-    background-color: #319AE5;
+    background-color: rgb(19,101,138);/*#1F4AED;*/
     position: relative;
     display: flex;
     /* justify-content: center; */

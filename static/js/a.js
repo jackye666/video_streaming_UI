@@ -271,18 +271,39 @@ $(document).ready(function(){
             method:"GET",
             success: function(response){
                 // console.log("score is "+ response);
-                $(".gif").attr("src",`static/gif/3d_${response}.gif`);
+                if(response=="hold"){
+                    $("#arrow_3d").attr("src",`static/3d_arrow/x-.png`);
+                }
+                else{
+                    $("#arrow_3d").attr("src",`static/3d_arrow/${response}mv.png`);
+                }
+                
             }
         });
     },3000);
 
-    var vleft = $(".camera").position().left+1;
-    var vtop = $(".camera").position().top-1;
-    console.log(vleft,vtop);
-    $(".gif").css({
-        "left":vleft,
-        "top":vtop
-    })
+    $(".camera").on("load",function(){
+        var vleft = $(".camera").position().left+1;
+        var vtop = $(".camera").position().top-1;
+        var height = $(".camera").height()*0.3;
+        console.log(vleft,vtop);
+        $(".gif").css({
+            "left":vleft,
+            "top":vtop,
+            "height":`${height}px`
+        })
+        vleft += $(".camera").width()*0.15;
+        vtop  += $(".camera").height()*0.14;
+        height = $(".camera").height()*0.04;
+        console.log(vleft,vtop);
+        $("#arrow_3d").css({
+            "left":vleft,
+            "top":vtop,
+            "height":`${height}px`
+        })
+    });
+
+
 
  });
 
