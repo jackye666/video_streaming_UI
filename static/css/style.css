@@ -147,12 +147,10 @@ img{
     align-items: center;
 }
 
-#arrow_3d{
+.arrow_3d{
     position: absolute;
-    /* top: 17%;
-    left: 22%;
-    height: 4%; */
     z-index: 6;
+    left: 0px;
 }
 
 .gif{

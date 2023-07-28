@@ -271,13 +271,21 @@ $(document).ready(function(){
             method:"GET",
             success: function(response){
                 // console.log("score is "+ response);
-                if(response=="hold"){
-                    $("#arrow_3d").attr("src",`static/3d_arrow/x-.png`);
-                }
-                else{
-                    $("#arrow_3d").attr("src",`static/3d_arrow/${response}mv.png`);
-                }
-                
+                $("#x0").attr("src",`static/3d_arrow/x-.png`);
+                $("#x1").attr("src",`static/3d_arrow/x+.png`);
+                $("#y0").attr("src",`static/3d_arrow/y-.png`);
+                $("#y1").attr("src",`static/3d_arrow/y+.png`);
+                if(response!="hold"){
+                    console.log(response[1],response);
+                    let id = "";
+                    if(response[1]=="+"){
+                        id=response[0]+1;
+                    }
+                    else{
+                        id=response[0]+0;
+                    }
+                    $(`#${id}`).attr("src",`static/3d_arrow/${response}mv.png`);
+                }     
             }
         });
     },3000);
@@ -292,15 +300,30 @@ $(document).ready(function(){
             "top":vtop,
             "height":`${height}px`
         })
-        vleft += $(".camera").width()*0.15;
-        vtop  += $(".camera").height()*0.14;
+        w = $(".camera").width();
+        h = $(".camera").height();
         height = $(".camera").height()*0.04;
-        console.log(vleft,vtop);
-        $("#arrow_3d").css({
-            "left":vleft,
-            "top":vtop,
+        // console.log(vleft,vtop);
+        $("#x0").css({
+            "left":vleft+w*0.07,
+            "top":vtop+h*0.14,
             "height":`${height}px`
-        })
+        });
+        $("#x1").css({
+            "left":vleft+w*0.23,
+            "top":vtop+h*0.14,
+            "height":`${height}px`
+        });
+        $("#y0").css({
+            "left":vleft+w*0.165,
+            "top":vtop+h*0.20,
+            "width":`${height}px`
+        });
+        $("#y1").css({
+            "left":vleft+w*0.165,
+            "top":vtop+h*0.04,
+            "width":`${height}px`
+        });
     });
 
 

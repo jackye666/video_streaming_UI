@@ -37,7 +37,10 @@
                     <!--<h class = "header">Live Streaming</h>
                     <br>-->
                     <div style="position:relative;">
-                        <img id="arrow_3d"src="{{url_for('static',filename='3d_arrow/x-.png')}}">
+                        <img class="arrow_3d" id="x0" src="{{url_for('static',filename='3d_arrow/x-.png')}}">
+                        <img class="arrow_3d" id="x1" src="{{url_for('static',filename='3d_arrow/x+.png')}}">
+                        <img class="arrow_3d" id="y0" src="{{url_for('static',filename='3d_arrow/y-.png')}}">
+                        <img class="arrow_3d" id="y1" src="{{url_for('static',filename='3d_arrow/y+.png')}}">
                         <img id = "camera_id"class = "camera" src="{{ url_for('video_feed') }}">
                         <img class="gif"src="{{url_for('static',filename='3d_img/hold.png')}}">
                     </div>

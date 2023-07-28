@@ -28,7 +28,7 @@ args = parser.parse_args()
 def sim_pred():
     global mv_pred
     # mvs = ["hold","x+","x-","z+","z-","y-","y+","z_c","z_a","y_c","y_a","x_a","x_c"]
-    mvs = ["x-","hold"]
+    mvs = ["x-","x+","y-","y+","hold"]
     while True:
         i = random.randint(0, len(mvs) - 1)
         with threading.Lock():
@@ -109,6 +109,7 @@ def gen_frames():  # generate frame by frame from camera
             max_frame += 1
             ret, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
+            time.sleep(0.05);
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
 
