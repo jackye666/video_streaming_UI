@@ -264,13 +264,14 @@ $(document).ready(function(){
             }
         });
     },50);
-    
+    let shining_id = 0; 
     setInterval(()=>{
         $.ajax({
             url:"/move_prediction",
             method:"GET",
             success: function(response){
                 // console.log("score is "+ response);
+                clearInterval(shining_id);
                 $("#x0").attr("src",`static/3d_arrow/x-.png`);
                 $("#x1").attr("src",`static/3d_arrow/x+.png`);
                 $("#y0").attr("src",`static/3d_arrow/y-.png`);
@@ -284,7 +285,20 @@ $(document).ready(function(){
                     else{
                         id=response[0]+0;
                     }
-                    $(`#${id}`).attr("src",`static/3d_arrow/${response}mv.png`);
+                    $(`#${id}`).attr("src",`static/3d_arrow/${response}shining.png`);
+                    let shine = false;
+                    shining_id = setInterval(()=>{
+                        if(shine){
+                            shine = false;
+                            $(`#${id}`).attr("src",`static/3d_arrow/${response}shining.png`);
+                        }
+                        else{
+                            shine = true;
+                            $(`#${id}`).attr("src",`static/3d_arrow/${response}.png`);
+                        }
+                    },500);
+                    // $(`#${id}`).attr("src",`static/3d_arrow/${response}mv.png`);
+                    // $(`#x0`).attr("src",`static/3d_arrow/test.png`);
                 }     
             }
         });
