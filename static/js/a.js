@@ -11,14 +11,43 @@ var cur_id = 0;
 var name_id = 0;
 
 let meter = document.getElementById("meter");
-meter.style.strokeDashoffset = 360;
+// meter.style.strokeDashoffset = 326;
+// $("#add").click(function(){
+//     value = $(".score").text();
+//     value =parseInt(value);
+//     value+=1;
+//     if(value <= 0) value = 0;
+//     if(value >= 100) value = 100;
+//     updateHTMLProgress(value);
+// });
+// $("#minus").click(function(){
+//     value = $(".score").text();
+//     value =parseInt(value);
+//     value-=1;
+//     if(value <= 0) value = 0;
+//     if(value >= 100) value = 100;
+//     updateHTMLProgress(parseInt(value));
+// });
 function updateHTMLProgress(value) {
-    
-    const maxOffset = 360; // Maximum stroke-dashoffset value
-    const offset =  360- value/100 * maxOffset;
+    const maxOffset = 326; // Maximum stroke-dashoffset value
+    const offset =  maxOffset- (value)/100 * maxOffset;
+    $(".score").text(value);
     // console.log(offset);
     meter.style.strokeDashoffset = offset; 
-    $(".score").text(value);
+    if(value <= 30 ){
+        meter.style.stroke = '#C51605';
+    }
+    else if(value <= 55){
+        meter.style.stroke = '#FD8D14';
+    }
+    else if(value <= 85 ){
+        meter.style.stroke = '#FFE17B';
+    }
+    else{
+        meter.style.stroke = '#A2FF86';
+        meter.style.strokeDashoffset = 0; 
+    }
+    
 }
 
 function isMouseOverElement(event, element) {
@@ -39,53 +68,6 @@ function isMouseOverElement(event, element) {
       mouseY <= elementY + elementHeight
     );
   }
-
-
-  function sleep(milliseconds) {
-    const startTime = Date.now();
-    const endTime = startTime + milliseconds;
-    let currentTime = startTime;
-  
-    while (currentTime < endTime) {
-      currentTime = Date.now();
-    }
-  }
-  
-meter_id = 0
-function startUpdateScore(){
-    meter.style.strokeDashoffset = 360;
-    document.getElementById("bg-circle").style.fill = "#897b66";
-    meter_id = setInterval(updateScore, 50);
-}
-
-function updateScore(){
-    if(meter.style.strokeDashoffset/360 > 0.6)
-        updateHTMLProgress(1);
-    else{
-        let p = Math.random();
-        if(p > 0.7){
-            updateHTMLProgress(-1);
-        }
-        else{
-            updateHTMLProgress(1);
-        }
-    }
-    if(meter.style.strokeDashoffset < 30){
-        clearInterval(meter_id);
-        // alert("Perfect ultrasound Imaging");
-        // sleep(3000);
-        const imageElement = document.getElementById('camera_id');
-        Object.defineProperty(imageElement, 'src', {
-            writable: false,
-            configurable: false
-        });
-        document.getElementById("bg-circle").style.fill = "rgb(195,162,111)";
-        setTimeout(()=>{
-            startUpdateScore();
-        },3000);
-
-    }
-}
 
 
 
@@ -162,11 +144,6 @@ $(document).ready(function(){
     });
     $(".dropdown-content").mouseleave((event)=>{
         let in_sub = isMouseOverElement(event,$(".PLAX"))||isMouseOverElement(event,$(".PSAX"))||isMouseOverElement(event,$(".AP"))
-        // var in_sub= false;
-        // $(".subdropdown").each((in_sub)=>{
-        //     in_sub = in_sub || isMouseOverElement(event,$(this));
-        //     return in_sub
-        // })
         console.log(in_sub);
         if(!isMouseOverElement(event,$("#dropdown")) && !in_sub){
             // console.log("dropdown-content leave",isMouseOverElement(event,$("#dropdown")),isMouseOverElement(event,$(".subdropdown")));
@@ -260,6 +237,7 @@ $(document).ready(function(){
             method:"GET",
             success: function(response){
                 // console.log("score is "+ response);
+                // response = 0;
                 updateHTMLProgress(parseFloat(response));
             }
         });
@@ -272,34 +250,53 @@ $(document).ready(function(){
             success: function(response){
                 // console.log("score is "+ response);
                 clearInterval(shining_id);
-                $("#x0").attr("src",`static/3d_arrow/x-.png`);
-                $("#x1").attr("src",`static/3d_arrow/x+.png`);
-                $("#y0").attr("src",`static/3d_arrow/y-.png`);
-                $("#y1").attr("src",`static/3d_arrow/y+.png`);
+                $(`.gif`).attr("src",`static/3d_img/hold.png`);
+                // $("#x0").attr("src",`static/3d_arrow/x-.png`);
+                // $("#x1").attr("src",`static/3d_arrow/x+.png`);
+                // $("#y0").attr("src",`static/3d_arrow/y-.png`);
+                // $("#y1").attr("src",`static/3d_arrow/y+.png`);
+                $(".arrow_3d").hide();
                 if(response!="hold"){
-                    console.log(response[1],response);
-                    let id = "";
-                    if(response[1]=="+"){
-                        id=response[0]+1;
-                    }
-                    else{
-                        id=response[0]+0;
-                    }
-                    $(`#${id}`).attr("src",`static/3d_arrow/${response}shining.png`);
-                    let shine = false;
-                    shining_id = setInterval(()=>{
-                        if(shine){
-                            shine = false;
-                            $(`#${id}`).attr("src",`static/3d_arrow/${response}shining.png`);
+                    if(response[1] != "_"){
+                        // console.log(response[1],response);
+                        let id = "";
+                        if(response[1]=="+"){
+                            id=response[0]+1;
                         }
                         else{
-                            shine = true;
-                            $(`#${id}`).attr("src",`static/3d_arrow/${response}.png`);
+                            id=response[0]+0;
                         }
-                    },500);
-                    // $(`#${id}`).attr("src",`static/3d_arrow/${response}mv.png`);
-                    // $(`#x0`).attr("src",`static/3d_arrow/test.png`);
-                }     
+                        // $(`#${id}`).attr("src",`static/3d_arrow/${response}shining.png`);
+                        $(`#${id}`).attr("src",`static/3d_arrow/${response}.png`);
+                        $(`#${id}`).show();
+                        let shine = true;
+                        shining_id = setInterval(()=>{
+                            if(shine){
+                                shine = false;
+                                $(`#${id}`).attr("src",`static/3d_arrow/${response}shining.png`);
+                            }
+                            else{
+                                shine = true;
+                                $(`#${id}`).attr("src",`static/3d_arrow/${response}.png`);
+                            }
+                        },500);
+                    }
+                    else{
+                        $(".arrow_3d").hide();
+                        $(`.gif`).attr("src",`static/3d_img/${response}_arrow.png`);
+                        let shine = false;
+                        shining_id = setInterval(()=>{
+                            if(shine){
+                                shine = false;
+                                $(`.gif`).attr("src",`static/3d_img/${response}_arrow.png`);
+                            }
+                            else{
+                                shine = true;
+                                $(`.gif`).attr("src",`static/3d_img/hold.png`);
+                            }
+                        },500);
+                    }
+                }
             }
         });
     },3000);

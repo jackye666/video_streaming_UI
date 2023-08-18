@@ -78,8 +78,8 @@ img{
   }
   
   .meter-1 {
-    stroke-dasharray: 360;
-    stroke-dashoffset: 360;
+    stroke-dasharray: 326 326;
+    stroke-dashoffset: 326;
     stroke: rgb(19,101,138);
   }
   

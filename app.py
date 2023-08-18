@@ -28,7 +28,8 @@ args = parser.parse_args()
 def sim_pred():
     global mv_pred
     # mvs = ["hold","x+","x-","z+","z-","y-","y+","z_c","z_a","y_c","y_a","x_a","x_c"]
-    mvs = ["x-","x+","y-","y+","hold"]
+    mvs = ["x-","x+","y-","y+","hold","x_c","y_c","y_a"]
+    # mvs = ["hold","x_c"]
     while True:
         i = random.randint(0, len(mvs) - 1)
         with threading.Lock():
@@ -152,7 +153,7 @@ i=0
 def get_quality_score():
     if args.simulate:
         global i
-        i+=1
+        i+=1*2
         val = 0+i/5
         if val >= 100:
             i = 0
