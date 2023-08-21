@@ -14,9 +14,10 @@ app = Flask(__name__,
 
 camera = ""
 isSave = False
-saved_folder = "saved_frame"
+saved_folder = "static/saved_frame"
 mv_pred = "hold"
 file = ""
+img_cnt = 0
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-g", "--gui", action="store_true", help="GUI mode")
@@ -57,6 +58,7 @@ def gen_frames():  # generate frame by frame from camera
     global act
     global send_flag
     global quality_score
+    global img_cnt
     frame_count = 0
     max_frame = 0
     msg = ["x+", "x-", "y+", "y-", "z+", "z-", "x_c", "x_a", "y_c", "y_a", "z_c", "z_a", "hold"]
@@ -104,8 +106,9 @@ def gen_frames():  # generate frame by frame from camera
                     send_flag.value = 0
                     l.release()
             if isSave:
-                cv2.imwrite(f'{saved_folder}/frame_{frame_count}.jpg', frame)
+                cv2.imwrite(f'{saved_folder}/img_{img_cnt}.jpg', frame)
                 isSave = False
+                img_cnt += 1
             frame_count += 1
             max_frame += 1
             ret, buffer = cv2.imencode('.jpg', frame)
@@ -141,7 +144,7 @@ def get_img_name():
 def save_img():
     global isSave
     isSave = True
-    return "Saved"
+    return f'{saved_folder}/img_{img_cnt}.jpg'
 
 
 @app.route('/move_prediction')

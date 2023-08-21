@@ -213,7 +213,6 @@ $(document).ready(function(){
     });
 
 
-
     $("#save-btn").click(()=>{
         var button = $(this);
 
@@ -225,7 +224,15 @@ $(document).ready(function(){
             method:"GET",
             success: function(response){
                 alert("Frame Saved!");
+                console.log(response,`<div><img src='${response}'></div>`);
                 // $(this).button("reset");
+                // $('.image-container').append(`<div><img src="static/saved_frame/frame_131.jpg" alt="Image 1"></div>`);
+                $('.image-container').append(`<div><img src="${response}"></div>`);
+                $(".image-container div img").hover(function() {
+                    $(this).css("transform", "scale(1.05)");
+                  }, function() {
+                    $(this).css("transform", "scale(1)");
+                  });
             }
         });
     });
