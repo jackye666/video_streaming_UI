@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, Response, request
 import cv2
 from flaskwebgui import FlaskUI
 import threading
@@ -18,6 +18,7 @@ saved_folder = "static/saved_frame"
 mv_pred = "hold"
 file = ""
 img_cnt = 0
+isPause = False
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-g", "--gui", action="store_true", help="GUI mode")
@@ -59,9 +60,12 @@ def gen_frames():  # generate frame by frame from camera
     global send_flag
     global quality_score
     global img_cnt
+    global isPause
     frame_count = 0
     max_frame = 0
     msg = ["x+", "x-", "y+", "y-", "z+", "z-", "x_c", "x_a", "y_c", "y_a", "z_c", "z_a", "hold"]
+    first = True
+    saved_frame = None
     if not args.simulate:
         from torchvision import transforms
         from PIL import Image
@@ -84,6 +88,7 @@ def gen_frames():  # generate frame by frame from camera
                 break
         else:
             frame = cv2.resize(ori_frame, (640, 480))
+            
             if not args.simulate:
                 if max_frame < 30:
                     frame_pre = ori_frame[crop_coord[1]:crop_coord[3], crop_coord[0]:crop_coord[2], :]
@@ -111,16 +116,30 @@ def gen_frames():  # generate frame by frame from camera
                 img_cnt += 1
             frame_count += 1
             max_frame += 1
-            ret, buffer = cv2.imencode('.jpg', frame)
-            frame = buffer.tobytes()
-            time.sleep(0.02);
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
+            
+            # print("isPause and first:",isPause,first)
+            if isPause:# becareful that isPause might be changed during the following region               
+                if first:
+                    saved_frame = frame
+                    first = False
+                    # print("saved_frame!!!!")
+                time.sleep(0.02)
+                saved_frame_buffer = cv2.imencode('.jpg', saved_frame)[1].tobytes()
+                yield (b'--frame\r\n'
+                       b'Content-Type: image/jpeg\r\n\r\n' + saved_frame_buffer + b'\r\n')
+            else:
+                saved_frame = None
+                first = True
+                ret, buffer = cv2.imencode('.jpg', frame)
+                yield (b'--frame\r\n'
+                       b'Content-Type: image/jpeg\r\n\r\n' + buffer.tobytes() + b'\r\n')
+                # concat frame one by one and show result
 
 
 @app.route('/video_feed')
 def video_feed():
     # Video streaming route. Put this in the src attribute of an img tag
+    global isPause
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
@@ -164,6 +183,18 @@ def get_quality_score():
         return str(val)
     else:
         return str(QS)
+    
+    
+@app.route("/pause",methods=["POST"])
+def pause():#0 for pause and 1 for resume
+    global isPause
+    ops = request.form['ispause']  # 获取前端发送的变量
+    if ops == '1':
+        isPause = False
+    else:
+        isPause = True
+    print("!"*10,isPause)
+    return f'isPause:{isPause}'
 
 if __name__ == '__main__':
     queue = mp.Queue()  # Create a shared queue

@@ -214,9 +214,9 @@ $(document).ready(function(){
 
 
     $("#save-btn").click(()=>{
-        var button = $(this);
+        var button = $("#save-btn");
 
-        button.prop('disabled', true);
+        // button.prop('disabled', true);
         button.text('Saving...');
 
         $.ajax({
@@ -225,18 +225,58 @@ $(document).ready(function(){
             success: function(response){
                 alert("Frame Saved!");
                 console.log(response,`<div><img src='${response}'></div>`);
-                // $(this).button("reset");
+                button.text('Save');
                 // $('.image-container').append(`<div><img src="static/saved_frame/frame_131.jpg" alt="Image 1"></div>`);
-                $('.image-container').append(`<div><img src="${response}"></div>`);
-                $(".image-container div img").hover(function() {
-                    $(this).css("transform", "scale(1.05)");
-                  }, function() {
-                    $(this).css("transform", "scale(1)");
-                  });
+                $('.image-container').append(`<div class="image-border"><img class="image-saved" src="${response}"></div>`);
+                // $(".image-container div img").hover(function() {
+                //     $(this).css("transform", "scale(1.05)");
+                //   }, function() {
+                //     $(this).css("transform", "scale(1)");
+                //   });
             }
         });
     });
+    var pause_btn_status = 0;
+    $("#pause-btn").click(()=>{
+        // var myVariable = "Hello from front-end!"; 
+        var button = $("#pause-btn");
+        $.ajax({
+            url:"/pause",
+            method:"POST",
+            data:{ispause: pause_btn_status},
+            success:function(response){
+                console.log("pause btn op:",response);       
+                pause_btn_status = 1-pause_btn_status;
+                if(pause_btn_status == 0){
+                    console.log("pause_btn_status:",pause_btn_status);
+                    button.text("Pause");
+                }
+                else{
+                    console.log("pause_btn_status:",pause_btn_status);
+                    button.text("Resume");
+                }         
+            }
+        })
+    });
 
+    $(".image-container").on("click",".image-saved",function() {
+        // 在控制台输出被点击的图片的src属性
+        var clickedSrc = $(this).attr("src");
+        console.log("Clicked image src:", clickedSrc);
+        alert(clickedSrc);
+        // $(".modal").css({
+        //     "display":"flex",
+        //     "z-index":"10"
+        // });
+        // $(".modal-image").attr("src",clickedSrc);
+        // $(".modal-image").css("transform","scale(1)");
+        // setTimeout(() => {
+        //     $(".modal-image").css("transform","scale(1)");
+        // }, 10);
+    });
+    // $(".modal").click(()=>{
+    //     $(this).css({"display":"none","z-index":"0"});
+    // })
     // var quality_score = 0;
     setInterval(()=>{
         $.ajax({
