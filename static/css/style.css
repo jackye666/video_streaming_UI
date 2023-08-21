@@ -140,6 +140,9 @@ img{
     justify-content: center;
     flex-direction: column;
 }
+.screen img{
+    pointer-events: none;
+}
 .screen h{
     font-size: 5vh;
     font-family: Taviraj;
@@ -200,29 +203,37 @@ img{
     object-fit: cover;
     transition: transform 0.3s ease-in-out;
     pointer-events: auto;
+    cursor: pointer;
+    user-select: none;
   }
 
   .image-container div:not(:last-child) {
     margin-right: 5px;
     border-right: 1px solid #ccc;
   }
-  /* .modal{
+  .modal{
+    /* border: 2px solid red; */
     display: none;
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 80%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8); 
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 0;
+    z-index: -1;
+    cursor: pointer;
   }
   .modal-image{
-    max-height: 200px;
+    /* border: 2px solid green; */
+    height: 10%;
+    max-height: 80%;
     transition: transform 0.5s ease-in-out;
-  } */
+    user-select: none; /* 禁止选中文本 */
+    pointer-events: auto;
+  }
 .button{
     position: absolute;
     border: 2px solid #fffaf0;;
@@ -287,6 +298,9 @@ img{
     /* border: 1px solid red; */
     height: 100%;
     color: #f8eeda;/*#F5E6EB;*/
+}
+.setting_topics img{
+    pointer-events: none;
 }
 
 .setting_topics h3{

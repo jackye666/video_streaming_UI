@@ -263,20 +263,22 @@ $(document).ready(function(){
         // 在控制台输出被点击的图片的src属性
         var clickedSrc = $(this).attr("src");
         console.log("Clicked image src:", clickedSrc);
-        alert(clickedSrc);
-        // $(".modal").css({
-        //     "display":"flex",
-        //     "z-index":"10"
-        // });
-        // $(".modal-image").attr("src",clickedSrc);
-        // $(".modal-image").css("transform","scale(1)");
-        // setTimeout(() => {
-        //     $(".modal-image").css("transform","scale(1)");
-        // }, 10);
+        // alert(clickedSrc);
+        $(".modal").css({
+            "display":"flex",
+            "z-index":"10"
+        });
+        $(".modal-image").attr("src",clickedSrc);
+        $(".modal-image").css("transform","scale(1)");
+        setTimeout(() => {
+            $(".modal-image").css("transform","scale(8)");
+        }, 100);
     });
-    // $(".modal").click(()=>{
-    //     $(this).css({"display":"none","z-index":"0"});
-    // })
+    $(".modal").click(()=>{
+        // alert("haha");
+        $(".modal").css({"display":"none","z-index":"-1"});
+        // $(".modal-image").css("height","%10");
+    })
     // var quality_score = 0;
     setInterval(()=>{
         $.ajax({
