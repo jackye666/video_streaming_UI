@@ -123,7 +123,6 @@ def gen_frames():  # generate frame by frame from camera
                     saved_frame = frame
                     first = False
                     # print("saved_frame!!!!")
-                time.sleep(0.02)
                 saved_frame_buffer = cv2.imencode('.jpg', saved_frame)[1].tobytes()
                 yield (b'--frame\r\n'
                        b'Content-Type: image/jpeg\r\n\r\n' + saved_frame_buffer + b'\r\n')
@@ -131,6 +130,7 @@ def gen_frames():  # generate frame by frame from camera
                 saved_frame = None
                 first = True
                 ret, buffer = cv2.imencode('.jpg', frame)
+                time.sleep(0.02)
                 yield (b'--frame\r\n'
                        b'Content-Type: image/jpeg\r\n\r\n' + buffer.tobytes() + b'\r\n')
                 # concat frame one by one and show result
