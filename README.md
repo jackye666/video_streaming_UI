@@ -1,12 +1,12 @@
 # Video-Streaming-Software
 A Flask Web-App to stream video and do inference based on the image
 ### Setup
-## Using simulate mode(no model inference) and non-web UI and simulate-video
+#### Using simulate mode(no model inference) and non-web UI and simulate-video
 ```
 python app.py -s -g
  
 ```
-## Using simulate mode(no model inference) and web UI and camera video stream
+#### Using simulate mode(no model inference) and web UI and camera video stream
 ```
 python app.py -s -c
  
